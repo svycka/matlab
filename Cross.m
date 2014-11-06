@@ -1,4 +1,4 @@
-classdef Cross
+classdef Cross < handle
     properties 
         % staciakampio krastines a ir b
         a = 0; %ilgis
@@ -23,7 +23,7 @@ classdef Cross
             obj.I = m*(a^2+b^2)/12;
             obj.direction = direction;
         end
-        function obj = spinCross(obj,dt)
+        function spinCross(obj,dt)
            obj.DDU=(obj.F./[obj.m,obj.m,obj.I]); % pagreiciai del isoriniu jegu
            obj.DU=obj.DU+dt*obj.DDU;      % greiciu ekstrapoliavimas     
            obj.U=obj.U+dt*obj.DU;

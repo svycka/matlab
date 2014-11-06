@@ -11,9 +11,9 @@ function main()
      for t=0:dt:TT
          figure(1);axis equal;axis([xmin,xmax,ymin,ymax]);hold on, grid on
          cla; hold on;
-         cross1 = cross1.spinCross(dt);
-         cross2 = cross2.spinCross(dt);
-         cross3 = cross3.spinCross(dt);
+         cross1.spinCross(dt);
+         cross2.spinCross(dt);
+         cross3.spinCross(dt);
          model = Construction();
          model.create();
          title(sprintf('t=%g',t));
