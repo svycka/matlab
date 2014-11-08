@@ -8,13 +8,16 @@ function main()
     dt = 0.001;
     TT = 10;
 
+     model = Construction();
      for t=0:dt:TT
          figure(1);axis equal;axis([xmin,xmax,ymin,ymax]);hold on, grid on
          cla; hold on;
          cross1.spinCross(dt);
          cross2.spinCross(dt);
          cross3.spinCross(dt);
-         model = Construction();
+         model.create();
+         model.moveStatic(dt,50);
+         model.moveSquare(dt);
          model.create();
          title(sprintf('t=%g',t));
          pause(dt); 
