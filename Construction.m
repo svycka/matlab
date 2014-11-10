@@ -51,8 +51,8 @@ classdef Construction < handle
             this.deltaY = this.cor(1,2);
             this.I_kv = this.m*(3^2+1^2)/12;
             this.G = this.cor(3,1:2);
-%             this.S = [cos(this.phi+this.alpha) -sin(this.phi+this.alpha) ;
-%                 sin(this.phi+this.alpha) cos(this.phi+this.alpha)]*[this.len;0];
+            this.S = [cos(this.phi+this.alpha) -sin(this.phi+this.alpha) ;
+                sin(this.phi+this.alpha) cos(this.phi+this.alpha)]*[this.len;0];
 this.S = [0 0;0 0]*[this.len;0];
             this.L0 = norm(this.cor(1,1)-this.cor(3,1));
         end
@@ -87,7 +87,7 @@ this.S = [0 0;0 0]*[this.len;0];
         end
         
         function moveStatic(this, dt, speedX)
-%             this.cor(1,1) = 0;%this.cor(1,1) + dt * speedX;
+            this.cor(1,1) = this.cor(1,1) + dt * speedX;
             this.time = this.time+dt;
             this.cor(1,2) = this.deltaY+sin(this.time*speedX);
             return
@@ -97,17 +97,23 @@ this.S = [0 0;0 0]*[this.len;0];
             % Apskritimo mazgas prie kurio jungiama spyruokle laiko momentu t -----
             c_aps = [this.cor(1,1)+this.U(1,1); 
                 this.cor(1,2)+this.U(1,2)];
-%             c_aps = [this.cor(1,1); this.cor(1,2)];
+
+            this.G = this.cor(3,1:2) + this.U(3,1:2);
+            this.S = [cos(this.phi+this.alpha) -sin(this.phi+this.alpha) ;
+                sin(this.phi+this.alpha) cos(this.phi+this.alpha)]*[this.len;0];
             c_kv = this.S+this.G';
-%             rectangle('Position',[c_kv(1), c_kv(2),1,1],'Curvature',[1,1],'FaceColor',[0.4 0.6 1]); 
+
+            
+            
+            
             L = norm(c_aps-c_kv);
             deltaL = L-this.L0;
-            T = -1*this.k*deltaL;
+            T = this.k*deltaL;
             dist = c_aps-c_kv;
             n = dist/norm(dist);
             TT = T*n';
             M_kv = cross([this.S;0],[TT';0]);
-            T_kv = 0 + [TT +M_kv(3)];
+            T_kv = 0 + [TT M_kv(3)];
             this.DDU(3,:) = this.pagreitis(T_kv, this.m, this.I_kv); %patikrinti 
             this.DU(3,:) = this.DU(3,:)+dt*this.DDU(3,:);
             this.U(3,:) = this.U(3,:)+dt*this.DU(3,:);
@@ -115,7 +121,7 @@ this.S = [0 0;0 0]*[this.len;0];
             return
         end
         
-        function DDU = pagreitis(~,F, m, I)
+        function DDU = pagreitis(~, F, m, I)
             DDU = F ./ [m m I];
         end
         function braizyti_staciakampi(this,U,cor,a, b)

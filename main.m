@@ -15,7 +15,9 @@ function main()
          cross1.spinCross(dt);
          cross2.spinCross(dt);
          cross3.spinCross(dt);
-         model.create();
+%          model.create(); % AK - jei create f-ja naudojama tik
+%          atviazdavimui, ja uztenka naudoti tik 1 karta per integravimo
+%          zingsni. (Galima ir reciau).
          model.moveStatic(dt,50);
          model.moveSquare(dt);
          model.create();
