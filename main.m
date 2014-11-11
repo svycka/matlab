@@ -5,7 +5,7 @@ function main()
     cross1 = Cross(5, 0.3, [-7 2 0], [0 0 0], 1, 'left');
     cross2 = Cross(5, 0.3, [-3 -2 0], [0 0 0], 1, 'right');
     cross3 = Cross(5, 0.3, [2 2 0], [0 0 0], 1, 'left');
-    dt = 0.001;
+    dt = 0.01;
     TT = 10;
 
      model = Construction();
@@ -15,10 +15,7 @@ function main()
          cross1.spinCross(dt);
          cross2.spinCross(dt);
          cross3.spinCross(dt);
-%          model.create(); % AK - jei create f-ja naudojama tik
-%          atviazdavimui, ja uztenka naudoti tik 1 karta per integravimo
-%          zingsni. (Galima ir reciau).
-         model.moveStatic(dt,50);
+%          model.moveStatic(dt,5);
          model.moveSquare(dt);
          model.create();
          title(sprintf('t=%g',t));

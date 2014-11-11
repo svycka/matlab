@@ -1,10 +1,11 @@
 classdef Construction < handle
     properties
-        g = 8.8;
+        g = 9.8;
         k = 1000;
         m = 2;
         I_kv; %inercijos momentas
-        
+        I; % inercijos momentai
+        F; % pastovios jëgos
         ind = [1 2
                1 3
                1 4
@@ -50,6 +51,17 @@ classdef Construction < handle
         function this = Construction()
             this.deltaY = this.cor(1,2);
             this.I_kv = this.m*(3^2+1^2)/12;
+            this.F = [0 0 0
+                0 0 0
+                0 -this.g*this.m*10 0
+                0 0 0
+                0 0 0
+                0 0 0
+                0 0 0
+                0 0 0
+                0 0 0
+                0 0 0
+                0 0 0];
             this.G = this.cor(3,1:2);
             this.S = [cos(this.phi+this.alpha) -sin(this.phi+this.alpha) ;
                 sin(this.phi+this.alpha) cos(this.phi+this.alpha)]*[this.len;0];
@@ -113,11 +125,13 @@ this.S = [0 0;0 0]*[this.len;0];
             n = dist/norm(dist);
             TT = T*n';
             M_kv = cross([this.S;0],[TT';0]);
-            T_kv = 0 + [TT M_kv(3)];
+            T_kv = this.F(3,:) + [TT M_kv(3)];
+            % pagreitis
             this.DDU(3,:) = this.pagreitis(T_kv, this.m, this.I_kv); %patikrinti 
+            % greitis
             this.DU(3,:) = this.DU(3,:)+dt*this.DDU(3,:);
+            % poslinkis
             this.U(3,:) = this.U(3,:)+dt*this.DU(3,:);
-            this.DDU(3,:)
             return
         end
         
