@@ -15,7 +15,7 @@ function main()
          cross1.spinCross(dt);
          cross2.spinCross(dt);
          cross3.spinCross(dt);
-%          model.moveStatic(dt,5);
+         model.moveStatic(dt,5);
          model.moveSquare(dt);
          model.create();
          title(sprintf('t=%g',t));
