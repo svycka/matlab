@@ -99,73 +99,59 @@ classdef Construction < handle
         end
         
         function moveSquare(this,dt)
-            % Apskritimo mazgas prie kurio jungiama spyruokle laiko momentu t -----
-            c_aps = [this.cor(1,1)+this.U(1,1); 
-                this.cor(1,2)+this.U(1,2)];
+            
+              this.moveFigure(dt, 1);
+              this.moveFigure(dt, 2);
+              this.moveFigure(dt, 3);
+%             %APSKRITIMAS
+%             c_aps = [this.cor(3,1)+this.U(3,1); 
+%                 this.cor(3,2)+this.U(3,2)];
+%             this.G = this.cor(2,1:2) + this.U(2,1:2);
+%             this.S = [cos(this.phi_aps+this.alpha) -sin(this.phi_aps+this.alpha) ;
+%                 sin(this.phi_aps+this.alpha) cos(this.phi_aps+this.alpha)]*[this.len;0];
+%             c_kv = this.S+this.G';
+%             L = norm(c_aps-c_kv);
+%             deltaL = L-this.L0(1);
+%             T = this.k*deltaL;
+%             dist = c_aps-c_kv;
+%             n = dist/norm(dist);
+%             TT = T * n';
+%             c_aps_sp = [1 * cos(this.phi_aps + this.U(5,3)); 1 * sin(this.phi_aps + this.U(5,3))];
+%             M_aps = cross([c_aps_sp;0],[TT';0]);
+%             T_aps = this.F(3,:) + [TT +M_aps(3)];
+%             % pagreitis
+%             this.DDU(2,:) = this.pagreitis(T_aps, this.m, this.I_aps); %patikrinti 
+%             % greitis
+%             this.DU(2,:) = this.DU(2,:)+dt*this.DDU(2,:);
+%             % poslinkis
+%             this.U(2,:) = this.U(2,:)+dt*this.DU(2,:);
+            
+            return
+        end
+        
+        function moveFigure(this, dt, index)
+            % Objekto mazgas prie kurio jungiama spyruokle laiko momentu t -----
+            c_aps = [this.cor(this.ind(index,1),1)+this.U(this.ind(index,1),1); 
+                    this.cor(this.ind(index,1),2)+this.U(this.ind(index,1),2)];
 
-            this.G = this.cor(3,1:2) + this.U(3,1:2);
+            this.G = this.cor(this.ind(index,2),1:2) + this.U(this.ind(index,2),1:2);
             this.S = [cos(this.phi+this.alpha) -sin(this.phi+this.alpha) ;
-                sin(this.phi+this.alpha) cos(this.phi+this.alpha)]*[this.len;0];
+                      sin(this.phi+this.alpha) cos(this.phi+this.alpha)]*[this.len;0];
             c_kv = this.S+this.G';
             L = norm(c_aps-c_kv);
-            deltaL = L-this.L0(2);
+            deltaL = L-this.L0(index);
             T = this.k*deltaL;
             dist = c_aps-c_kv;
             n = dist/norm(dist);
             TT = T*n';
             M_kv = cross([this.S;0],[TT';0]);
-            T_kv = this.F(3,:) + [TT +M_kv(3)];
+            T_kv = this.F(this.ind(index,2),:) + [TT +M_kv(2)];
             % pagreitis
-            this.DDU(3,:) = this.pagreitis(T_kv, this.m, this.I_kv); %patikrinti 
+            this.DDU(this.ind(index,2),:) = this.pagreitis(T_kv, this.m, this.I_kv); %patikrinti 
             % greitis
-            this.DU(3,:) = this.DU(3,:)+dt*this.DDU(3,:);
+            this.DU(this.ind(index,2),:) = this.DU(this.ind(index,2),:)+dt*this.DDU(this.ind(index,2),:);
             % poslinkis
-            this.U(3,:) = this.U(3,:)+dt*this.DU(3,:);
-            
-
-            % pagreitis
-            this.DDU(4,:) = this.pagreitis(T_kv, this.m, this.I_kv); %patikrinti 
-            % greitis
-            this.DU(4,:) = this.DU(4,:)+dt*this.DDU(4,:);
-            % poslinkis
-            this.U(4,:) = this.U(4,:)+dt*this.DU(4,:);
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            %APSKRITIMAS
-            c_aps = [this.cor(3,1)+this.U(3,1); 
-                this.cor(3,2)+this.U(3,2)];
-            this.G = this.cor(2,1:2) + this.U(2,1:2);
-            this.S = [cos(this.phi_aps+this.alpha) -sin(this.phi_aps+this.alpha) ;
-                sin(this.phi_aps+this.alpha) cos(this.phi_aps+this.alpha)]*[this.len;0];
-            c_kv = this.S+this.G';
-            L = norm(c_aps-c_kv);
-            deltaL = L-this.L0(1);
-            T = this.k*deltaL;
-            dist = c_aps-c_kv;
-            n = dist/norm(dist);
-            TT = T * n';
-            c_aps_sp = [1 * cos(this.phi_aps + this.U(5,3)); 1 * sin(this.phi_aps + this.U(5,3))];
-            M_aps = cross([c_aps_sp;0],[TT';0]);
-            T_aps = this.F(3,:) + [TT +M_aps(3)];
-            % pagreitis
-            this.DDU(2,:) = this.pagreitis(T_aps, this.m, this.I_aps); %patikrinti 
-            % greitis
-            this.DU(2,:) = this.DU(2,:)+dt*this.DDU(2,:);
-            % poslinkis
-            this.U(2,:) = this.U(2,:)+dt*this.DU(2,:);
-            
-            return
+            this.U(this.ind(index,2),:) = this.U(this.ind(index,2),:)+dt*this.DU(this.ind(index,2),:);
         end
         
         function DDU = pagreitis(~, F, m, I)
