@@ -69,9 +69,13 @@ classdef Construction < handle
             this.S = [0 0;0 0]*[this.len;0];
             this.L0 = zeros(8,1);
             for i=1:1:8
-                this.L0(i) = norm(this.cor(this.ind(i,1),1:2)-this.cor(this.ind(i,2),1:2));
+                this.L0(i) = norm(this.cor(this.ind(i,1),1)-this.cor(3,1));
             end
+            this.L0 = norm(this.cor(1,1)-this.cor(3,1));
+            this.L0k2 = norm(this.cor(1,1:2)-this.cor(4,1:2));
             this.I_aps = (this.m * 1 ^ 2)/2;
+            this.L0aps = norm(this.cor(1,1:2)-this.cor(2,1:2));
+             this.L0tr1 = norm(this.cor(3,1:2)-this.cor(5,1:2));
             this.phi_aps = pi/2;
         end
         function create(this)
@@ -108,7 +112,7 @@ classdef Construction < handle
                 sin(this.phi+this.alpha) cos(this.phi+this.alpha)]*[this.len;0];
             c_kv = this.S+this.G';
             L = norm(c_aps-c_kv);
-            deltaL = L-this.L0(2);
+            deltaL = L-this.L0k2;
             T = this.k*deltaL;
             dist = c_aps-c_kv;
             n = dist/norm(dist);
@@ -150,7 +154,7 @@ classdef Construction < handle
                 sin(this.phi_aps+this.alpha) cos(this.phi_aps+this.alpha)]*[this.len;0];
             c_kv = this.S+this.G';
             L = norm(c_aps-c_kv);
-            deltaL = L-this.L0(1);
+            deltaL = L-this.L0tr1;
             T = this.k*deltaL;
             dist = c_aps-c_kv;
             n = dist/norm(dist);
