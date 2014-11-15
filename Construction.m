@@ -1,5 +1,5 @@
 classdef Construction < handle
-    properties
+    properties(Access=public)
         g = 9.8;
         k = 1000;
         m = 2;
@@ -77,7 +77,7 @@ classdef Construction < handle
         function create(this)
             %mazgai
             rectangle('Position',[this.cor(1,1)+this.rad(1,1), this.cor(1,2)+this.rad(1,2),3,3],'Curvature',[1,1],'FaceColor',[0.4 0.6 1]); 
-            this.braizyti_staciakampi(this.U(3,:), this.cor(3,:), 3, 1);
+%             this.braizyti_staciakampi(this.U(3,:), this.cor(3,:), 3, 1);
             this.braizyti_staciakampi(this.U(4,:), this.cor(4,:), 3, 1);
             this.braizyti_apskritima(this.U(2,:), this.cor(2,:), 1);
             this.braizyti_trikampi(this.U(5,:),this.cor(5,:),1); 
@@ -185,7 +185,9 @@ classdef Construction < handle
             fill(coord(1,:),coord(2,:),[0 0.5 0.7]);
             return
         end
-        
+        function center = getCenter(this)
+           center = this.cor(1,1:2)' ;
+        end
     end
     
 end

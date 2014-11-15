@@ -7,7 +7,7 @@ function main()
     cross3 = Cross(5, 0.3, [2 2 0], [0 0 0], 1, 'left');
     dt = 0.01;
     TT = 10;
-
+test_kvadratas = FigureRectangle(3, 1, 1, [-22 7 0]);
      model = Construction();
      for t=0:dt:TT
          figure(1);axis equal;axis([xmin,xmax,ymin,ymax]);hold on, grid on
@@ -17,6 +17,8 @@ function main()
          cross3.spinCross(dt);
          model.moveStatic(dt,5);
          model.moveSquare(dt);
+         test_kvadratas.move(dt, model,5);
+         test_kvadratas.draw();
          model.create();
          title(sprintf('t=%g',t));
          pause(dt); 
