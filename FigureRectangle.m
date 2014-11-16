@@ -17,35 +17,7 @@ classdef FigureRectangle < Figure
             this.cor = cor; % [x y posukio_kampas]
             this.len = 0; % kolkas 0 nes centre bet reikts paskaièiuot
         end
-        function addForce(this, spring)
-            % mazgas prie kurio jungiama spyruokle laiko momentu t -----
-            mazgas1 = spring.rightConnectionPoint();
-            L0 = spring.length; % reiks kaþkaip pasiimt ið spyruoklës <------------------------ FIXME
 
-            % Kvadrato kampas prie kurio jungiama spyruokle -----------------------
-            % alpha, len - kintamieji apskaiciuoti pries sk. integravima
-            G=this.U(1:2)+this.cor(1:2);    % Kvadrato centro kordinates
-            phi=this.U(3);                % Kvadrato posukio kampas;
-            % Vektorius ið centro i itvirtinimo taska
-            S= [cos(phi+this.alpha) -sin(phi+this.alpha) ;
-                     sin(phi+this.alpha)  cos(phi+this.alpha)]*[this.len;0];      
-            c_kv= S+G';  
-
-            % Apskaiciuojamos spyruokles sukurtos jegos ir jegu momentai, ir
-            % pridedama prie pastoviu jegu ----------------------------------------
-
-            L = norm(mazgas1-c_kv);  % Spyruokles ilgis tam tikru laiko momentu
-            deltaL = L -L0;        % Spyruokles pokytis nuo pradinio ilgio
-            T = spring.k*deltaL;          % Spyruikles sukurta jega
-            dist=mazgas1-c_kv;  n=dist/norm(dist); % Spyruokles jegos krypties normales vektorius
-
-            TT = T*n'; % Spyruokles sukurta jega, "paskirstyta"x,y kordinatems
-
-            M_kv=cross([S;0],[TT'; 0]); % Staciakampio jegos momentas
-
-            this.deltaF = this.deltaF+[TT +M_kv(3)];    % Prie pastoviu jegu pridedam Spyruokles sukurtas jegas (x,y) asimi ir jegos momenta
-        end
-        
         function draw(this)
             U = this.U;
             cor = this.cor;

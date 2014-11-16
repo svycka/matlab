@@ -19,12 +19,10 @@ classdef Spring < handle
         
         function len = getLength(this)
             len = norm(this.leftConnectionPoint()-this.rightConnectionPoint());
-%             len = this.object1.cor(1:2)-this.object2(1:2);
         end
         
         function point = leftConnectionPoint(this)
             point = this.connectionPoint(this.object1, this.strategy1);
-           % point = [this.cor(1)+this.U(1); this.cor(2)+this.U(2)];
         end
         
         function point = rightConnectionPoint(this)
@@ -40,6 +38,10 @@ classdef Spring < handle
         function inversed = inverse(this)
             inversed = Spring(this.object2, this.strategy2, this.object1, this.strategy1);
             inversed.length = this.length;
+        end
+        
+        function point = getVector(this)
+            point = this.strategy1.getVector(this.object1);
         end
     end
     
