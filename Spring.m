@@ -41,6 +41,10 @@ classdef Spring < handle
             inversed = Spring(this.object2, this.strategy2, this.object1, this.strategy1);
             inversed.length = this.length;
         end
+        
+        function point = getVector(this)
+            point = this.strategy1.getVector(this.object1);
+        end
     end
     
     methods (Access=protected)

@@ -20,9 +20,9 @@ classdef FigureFixedCircle < Figure
             % neveikia(itvirtintas taskas)
         end
         function move(this, dt)
-%             this.cor(1,1) = this.cor(1,1) + dt * this.speed;
-%             this.time = this.time+dt;
-%             this.cor(1,2) = this.Y+sin(this.time*this.speed);
+            this.cor(1,1) = this.cor(1,1) + dt * this.speed;
+            this.time = this.time+dt;
+            this.cor(1,2) = this.Y+sin(this.time*this.speed);
         end
         
         function draw(this)

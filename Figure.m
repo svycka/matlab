@@ -21,7 +21,7 @@ classdef (Abstract) Figure < handle
             this.deltaF = zeros(1,3);
             
             % Pridedamas slopimas proporcingas mazgo greiciui ==============
-            damp_abs = 1;
+            damp_abs = 0.5;
             F =  F - damp_abs *[this.DU(1),this.DU(2), this.DU(3)];
 
             % Pagreitis

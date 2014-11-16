@@ -1,6 +1,7 @@
 classdef (Abstract) ConnectionStrategy < handle
     properties
         alpha; % Pradinis posukio kampas i itvirtinimo mazga
+        rad = 0; % atstumas iki sujungimo
     end
     
     methods
@@ -8,7 +9,7 @@ classdef (Abstract) ConnectionStrategy < handle
         end
     end
     methods(Abstract)
-        getConnectionPoint(this, object)
+        point = getConnectionPoint(this, object)
     end
     
 end
