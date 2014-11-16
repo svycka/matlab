@@ -19,6 +19,10 @@ classdef (Abstract) Figure < handle
         function move(this,dt)
             F = this.F +this.deltaF;    % Prie pastoviu jegu pridedam Spyruokles sukurtas jegas (x,y) asimi ir jegos momenta
             this.deltaF = zeros(1,3);
+            
+            % Pridedamas slopimas proporcingas mazgo greiciui ==============
+            damp_abs = 1;
+            F =  F - damp_abs *[this.DU(1),this.DU(2), this.DU(3)];
 
             % Pagreitis
             this.DDU=this.pagreitis(F, this.m, this.I); % pagreiciai del isoriniu jegu
