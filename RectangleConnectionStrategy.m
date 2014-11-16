@@ -13,8 +13,6 @@ classdef RectangleConnectionStrategy < ConnectionStrategy
                 otherwise
                     error('bloga pozicija. Dar nemoku tokios suskaiciuot.')
             end
-%             this.alpha = 0;%alpha = pi/2 + asin((a/2) / sqrt((a/2)^2 + (b/2)^2));
-%             this.rad = 0;
         end
         
         function point = getConnectionPoint(this, object)

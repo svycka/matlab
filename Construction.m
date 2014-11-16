@@ -2,21 +2,6 @@ classdef Construction < handle
     properties(Access=public)
         construction;
         connections;
-%         ind = [1 2
-%                1 3
-%                1 4
-%                2 3
-%                5 3
-%                6 4
-%                7 4
-%                6 7]; %elementai
-%         cor = [-17 7 0
-%                 -22 9 0
-%                 -22 7 0
-%                 -22 5 0
-%                 -26 7 0
-%                 -28 5 0
-%                 -28 2 0]; %mazgu koordinates
     end
     
     methods

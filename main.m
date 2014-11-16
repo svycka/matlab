@@ -7,7 +7,7 @@ function main()
     dt = 0.02;
     TT = 30;
     model = Construction();
-    figure(1);axis equal;axis([-30,0,-10,20]);hold on, grid on;cla; hold on;
+    figure(1);axis equal;axis([-30,-10,0,15]);hold on, grid on;cla; hold on;
     model.draw();
     pause();
     for t=0:dt:TT

@@ -19,12 +19,10 @@ classdef Spring < handle
         
         function len = getLength(this)
             len = norm(this.leftConnectionPoint()-this.rightConnectionPoint());
-%             len = this.object1.cor(1:2)-this.object2(1:2);
         end
         
         function point = leftConnectionPoint(this)
             point = this.connectionPoint(this.object1, this.strategy1);
-           % point = [this.cor(1)+this.U(1); this.cor(2)+this.U(2)];
         end
         
         function point = rightConnectionPoint(this)
