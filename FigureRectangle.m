@@ -15,7 +15,6 @@ classdef FigureRectangle < Figure
             this.I = m*(a^2+b^2)/12;
             this.phi = cor(3);
             this.cor = cor; % [x y posukio_kampas]
-            this.len = 0; % kolkas 0 nes centre bet reikts paskaièiuot
         end
 
         function draw(this)

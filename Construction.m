@@ -11,21 +11,21 @@ classdef Construction < handle
             figure3 = FigureRectangle(3, 1, 2, [-22 7 0]);
             figure4 = FigureRectangle(3, 1, 2, [-22 5 0]);
             figure5 = FigureTriangle(1, 2, [-26 7 0]);
-            figure6 = FigureTriangle(1, 2, [-26 5 0]);
+            figure6 = FigureTriangle(1, 2, [-26 5 pi/3]);
             figure7 = FigureTriangle(1, 2, [-26 2 0]);
             this.construction = {figure1 figure2 figure3 figure4 figure5 figure6 figure7};
             
             spring1 = Spring(figure1, CircleConnectionStrategy(pi/2,figure1.rad), figure2,CircleConnectionStrategy(0,figure2.rad));
-            spring2 = Spring(figure1, CircleConnectionStrategy(pi,figure1.rad), figure3,RectangleConnectionStrategy(figure3.a, figure3.b, 'right_middle'));
-            spring3 = Spring(figure1, CircleConnectionStrategy(3*pi/2,figure1.rad), figure4,RectangleConnectionStrategy(figure4.a, figure4.b, 'right_middle'));
-            spring4 = Spring(figure2, CenterConnectionStrategy, figure3,RectangleConnectionStrategy(figure3.a, figure3.b, 'right_middle'));
-            spring5 = Spring(figure3, RectangleConnectionStrategy(figure3.a, figure3.b, 'left_middle'), figure5,CenterConnectionStrategy);
-            spring6 = Spring(figure4, RectangleConnectionStrategy(figure4.a, figure4.b, 'left_middle'), figure6,CenterConnectionStrategy);
-            spring7 = Spring(figure4, RectangleConnectionStrategy(figure4.a, figure4.b, 'left_middle'), figure7,CenterConnectionStrategy);
-            spring8 = Spring(figure6, CenterConnectionStrategy, figure7,CenterConnectionStrategy);
-            spring9 = Spring(figure3, RectangleConnectionStrategy(figure3.a, figure3.b, 'left_middle'), figure4,CenterConnectionStrategy);
-            spring10 = Spring(figure2, CenterConnectionStrategy, figure3,RectangleConnectionStrategy(figure3.a, figure3.b, 'left_middle'));
-            spring11 = Spring(figure3, RectangleConnectionStrategy(figure3.a, figure3.b, 'right_middle'), figure4,CenterConnectionStrategy);
+            spring2 = Spring(figure1, CircleConnectionStrategy(pi,figure1.rad), figure3,RectangleConnectionStrategy(figure3, 'right_middle'));
+            spring3 = Spring(figure1, CircleConnectionStrategy(3*pi/2,figure1.rad), figure4,RectangleConnectionStrategy(figure4, 'right_middle'));
+            spring4 = Spring(figure2, CenterConnectionStrategy, figure3,RectangleConnectionStrategy(figure3, 'right_middle'));
+            spring5 = Spring(figure3, RectangleConnectionStrategy(figure3, 'left_middle'), figure5,CenterConnectionStrategy);
+            spring6 = Spring(figure4, RectangleConnectionStrategy(figure4, 'left_middle'), figure6,RectangleConnectionStrategy(figure6, 'right_bottom'));
+            spring7 = Spring(figure4, RectangleConnectionStrategy(figure4, 'left_middle'), figure7,RectangleConnectionStrategy(figure7, 'right_bottom'));
+            spring8 = Spring(figure6, RectangleConnectionStrategy(figure6, 'left_bottom'), figure7,RectangleConnectionStrategy(figure7, 'middle_top'));
+            spring9 = Spring(figure3, RectangleConnectionStrategy(figure3, 'left_middle'), figure4,CenterConnectionStrategy);
+            spring10 = Spring(figure2, CenterConnectionStrategy, figure3,RectangleConnectionStrategy(figure3, 'left_middle'));
+            spring11 = Spring(figure3, RectangleConnectionStrategy(figure3, 'right_middle'), figure4,CenterConnectionStrategy);
             
             this.connections = {spring1 spring2 spring3 spring4 spring5 spring6 spring7 spring8 spring9 spring10 spring11};
         end
