@@ -1,13 +1,15 @@
 classdef FigureTriangle < Figure
     properties
-        rad;
+        a;
+        b;
     end
     
     methods
         
-        function this = FigureTriangle(rad, m, cor)
-            this.rad = rad;
-            this.I = (m*rad^2)/2; % apskritimo inercijos momentas(reiktu trikampio :D)
+        function this = FigureTriangle(a, m, cor)
+            this.a = a;
+            this.b = a;
+            this.I = m*(a^2+this.b^2)/12; % keturkampio inercijos momentas(reiktu trikampio :D)
             this.m = m;
             this.F = [0 -this.g*m 0];
             this.phi = cor(3);
@@ -15,8 +17,21 @@ classdef FigureTriangle < Figure
         end
 
         function draw(this)
-            xc=this.U(1)+this.cor(1);yc=this.U(2)+this.cor(2);
-            fill([xc xc-0.5 xc+0.5], [yc-0.5 yc+0.5 yc+0.5], 1);
+            U = this.U;
+            cor = this.cor;
+            a = this.a;
+            b = this.b;
+
+            xc=U(1)+cor(1);yc=U(2)+cor(2);phi=U(3)+cor(3);
+            coord=[-a/2  a/2  0;
+                   -b/2 -b/2  b/2;
+                     1    1    1  ];   % staciakampis etalonineje padetyje
+
+            T=[cos(phi) -sin(phi) xc;
+               sin(phi)  cos(phi) yc;
+                  0         0      1 ];      % transformavimo matrica
+            coord=T*coord;
+            fill(coord(1,:),coord(2,:),[0 0.5 0.7]);
         return 
         end
     end
