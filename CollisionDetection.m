@@ -20,7 +20,7 @@ classdef CollisionDetection
              %kvadrato centro koord.
              xc = cor(1)+U(1); yc = cor(2)+U(2);
              %kvadrato posūkio kampas
-             phi=U(3)+cor(3);
+             phi=(U(3)+cor(3))*-1;
              %kvadrato kampai
 %              x0 = xc - width/2;
 %              x1 = xc + width/2;
@@ -32,7 +32,6 @@ classdef CollisionDetection
              unrotatedCircleX = cos(phi) * (cx - xc) - sin(phi) * (cy - yc) + xc;
              unrotatedCircleY  = sin(phi) * (cx - xc) + cos(phi) * (cy - yc) + yc;
              %find closest point
-             closestX = unrotatedCircleX; closestY = unrotatedCircleY;
              if unrotatedCircleX < (x0-width)
                  closestX = x0-width;
              elseif unrotatedCircleX > x0
