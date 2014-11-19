@@ -1,5 +1,5 @@
 classdef Cross < handle
-    properties 
+    properties(Access=public)
         % staciakampio krastines a ir b
         a = 0; %ilgis
         b = 0; %plotis     
@@ -9,8 +9,6 @@ classdef Cross < handle
         F=[0 0 0];  % pastovios jegos
         I=0; %innercija
         direction = 'left';
-        % Pradiniai greiciai;
-
     end
 
     methods
@@ -23,11 +21,12 @@ classdef Cross < handle
             obj.I = m*(a^2+b^2)/12;
             obj.direction = direction;
         end
+        
         function spinCross(obj,dt)
            obj.DDU=(obj.F./[obj.m,obj.m,obj.I]); % pagreiciai del isoriniu jegu
            obj.DU=obj.DU+dt*obj.DDU;      % greiciu ekstrapoliavimas     
            obj.U=obj.U+dt*obj.DU;
-           obj.drawCross(obj.U,obj.cor,obj.a,obj.b);   
+           obj.drawCross(obj.U,obj.cor,obj.a,obj.b);  
            return
         end
         
@@ -53,5 +52,10 @@ classdef Cross < handle
             coord=T*coord;
             fill(coord(1,:),coord(2,:),[0 1 0.7]);
         end
+        
+        
+        
+       
+
     end
 end

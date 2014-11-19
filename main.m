@@ -9,16 +9,21 @@ function main()
     model = Construction();
     figure(1);axis equal;axis([-30,-10,0,15]);hold on, grid on;cla; hold on;
     model.draw();
+    %Collision Detection control
+    colDetect = CollisionDetection();
     pause();
     figure(1);axis equal;axis([xmin,xmax,ymin,ymax]);hold on, grid on
     for t=0:dt:TT
-        cla; hold on;
-        cross1.spinCross(dt);
-        cross2.spinCross(dt);
-        cross3.spinCross(dt);
+        cla;hold on;
         model.move(dt);
         model.draw();
-        
+        circleCoords = model.construction{2}.cor(1:2) + model.construction{2}.U(1:2);
+        circleRad = model.construction{2}.rad;
+        cross1.spinCross(dt);
+        colDetect.detectCircleCollision(circleCoords(1), circleCoords(2), circleRad, cross1.a, cross1.b, cross1.cor, cross1.U);
+        cross2.spinCross(dt);
+        cross3.spinCross(dt);
+            pause();
         title(sprintf('t=%g',t));
         pause(dt); 
     end
