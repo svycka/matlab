@@ -26,25 +26,24 @@ classdef CollisionDetection
 %              x1 = xc + width/2;
 %              y0 = yc + height/2;
 %              y1 = yc - height/2;
-            x0 = xc + width/2;
-            y0 = yc + height/2;
+            x0=
              %unrotate circle center point
              unrotatedCircleX = cos(phi) * (cx - xc) - sin(phi) * (cy - yc) + xc;
              unrotatedCircleY  = sin(phi) * (cx - xc) + cos(phi) * (cy - yc) + yc;
              %find closest point
              closestX = unrotatedCircleX; closestY = unrotatedCircleY;
-             if unrotatedCircleX < (x0-width)
-                 closestX = x0-width;
-             elseif unrotatedCircleX > x0
+             if unrotatedCircleX < x0
                  closestX = x0;
+             elseif unrotatedCircleX > (x0-width)
+                 closestX = x0-width;
              else
                  closestX = unrotatedCircleX;
              end
              
-              if unrotatedCircleY < y0-height
-                 closestY = y0-height;
-              elseif unrotatedCircleY > y0;
+              if unrotatedCircleY < y0
                  closestY = y0;
+              elseif unrotatedCircleY > (y0-height);
+                 closestY = y0-height;
               else
                  closestY = unrotatedCircleY;
               end

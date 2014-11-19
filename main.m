@@ -21,6 +21,7 @@ function main()
         circleRad = model.construction{2}.rad;
         cross1.spinCross(dt);
         colDetect.detectCircleCollision(circleCoords(1), circleCoords(2), circleRad, cross1.a, cross1.b, cross1.cor, cross1.U);
+        colDetect.detectCircleCollision(circleCoords(1), circleCoords(2), circleRad, cross1.b, cross1.a, cross1.cor, cross1.U);
         cross2.spinCross(dt);
         cross3.spinCross(dt);
             pause();
