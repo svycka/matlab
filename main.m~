@@ -19,9 +19,15 @@ function main()
         model.draw();
         circleCoords = model.construction{2}.cor(1:2) + model.construction{2}.U(1:2);
         circleRad = model.construction{2}.rad;
+        rectCoords = model.construction{3}.cor(1:3);
+        rectA = model.construction{3}.a;
+        rectB = model.construction{3}.b;
+        rectU = model.construction{3}.U;
+        triCoords = model.construction{5}.cor(1:3);
         cross1.spinCross(dt);
         colDetect.detectCircleCollision(circleCoords(1), circleCoords(2), circleRad, cross1.a, cross1.b, cross1.cor, cross1.U);
-        colDetect.detectRectangleCollision(cor1, a1, b1, cor2, a2, b2, U2)
+        colDetect.detectRectangleCollision(cross1.cor, cross1.a, cross1.b, rectCoords, rectA, rectB, rectU);
+        colDetect.detectTriangleCollision(cross1.cor, cross1.a, cross1.b, rectCoords, rectA, rectB, rectU);
         cross2.spinCross(dt);
         cross3.spinCross(dt);
             pause();
