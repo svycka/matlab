@@ -158,6 +158,18 @@ classdef CollisionDetection
              else
                 x = (B2*C1 - B1*C2)/det;
                 y = (A1*C2 - A2*C1)/det;
+                testX1 = corB1(1);
+                testX2 = corB2(1);
+                testY1 = corB1(2);
+                testY2 = corB2(2);
+                if testX1 > testX2
+                    testX1 = corB2(1);
+                    testX2 = corB1(1);
+                end
+                 if testY1 > testY2
+                    testY1 = corY2(1);
+                    testY2 = corY1(1);
+                end
                 if (x > corB1(1) && x < corB2(1)) && (y < corB1(2) && y > corB2(2))
                     colides = 0;
                 else
@@ -169,4 +181,3 @@ classdef CollisionDetection
     end
     
 end
-

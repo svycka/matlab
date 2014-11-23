@@ -23,7 +23,7 @@ function main()
         rectA = model.construction{3}.a;
         rectB = model.construction{3}.b;
         rectU = model.construction{3}.U;
-        triCoords = model.construction{5}.cor(1:3);
+        triCoords = model.construction{6}.cor(1:3);
         triA = model.construction{5}.a;
         triB = model.construction{5}.b;
         triU = model.construction{5}.U;
@@ -31,13 +31,13 @@ function main()
 %         colDetect.detectCircleCollision(circleCoords(1), circleCoords(2), circleRad, cross1.a, cross1.b, cross1.cor, cross1.U);
 %         colDetect.detectRectangleCollision(cross1.cor, cross1.a, cross1.b, rectCoords, rectA, rectB, rectU);
         colDetect.detectTriangleCollision(cross1.cor, cross1.b, cross1.a, triCoords, triA, triB, triU);
-        colDetect.detectTriangleCollision(cross1.cor, cross1.a, cross1.b, triCoords, triA, triB, triU);
+         colDetect.detectTriangleCollision(cross1.cor, cross1.a, cross1.b, triCoords, triA, triB, triU);
         cross2.spinCross(dt);
-        colDetect.detectTriangleCollision(cross2.cor, cross2.b, cross2.a, triCoords, triA, triB, triU);
-        colDetect.detectTriangleCollision(cross2.cor, cross2.a, cross2.b, triCoords, triA, triB, triU);
+%         colDetect.detectTriangleCollision(cross2.cor, cross2.b, cross2.a, triCoords, triA, triB, triU);
+%         colDetect.detectTriangleCollision(cross2.cor, cross2.a, cross2.b, triCoords, triA, triB, triU);
         cross3.spinCross(dt);
-        colDetect.detectTriangleCollision(cross3.cor, cross3.b, cross3.a, triCoords, triA, triB, triU);
-        colDetect.detectTriangleCollision(cross3.cor, cross3.a, cross3.b, triCoords, triA, triB, triU);
+%         colDetect.detectTriangleCollision(cross3.cor, cross3.b, cross3.a, triCoords, triA, triB, triU);
+%         colDetect.detectTriangleCollision(cross3.cor, cross3.a, cross3.b, triCoords, triA, triB, triU);
             pause();
         title(sprintf('t=%g',t));
         pause(dt); 
