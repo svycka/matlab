@@ -98,12 +98,26 @@ classdef CollisionDetection
             end
          end
          
-         function detectTriangleCollision(this, cor1, a1, b1, cor2, a2, b2, U2)
+         function detectTriangleCollision(this, cor1, a1, b1, U1, direction, cor2, a2, b2, U2)
               %besisukancio
-             pa1 = [cor1(1)-a1/2    cor1(2)+b1/2];
-             pb1 = [pa1(1)+a1        pa1(2)];
-             pc1 = [pa1(1)           pa1(2)-b1];
-             pd1 = [pa1(1)+a1         pa1(2)-b1];
+              xc=U1(1)+cor1(1);yc=U1(2)+cor1(2);phi=U1(3)+cor1(3);
+            coord=[-b1/2  b1/2  b1/2 -b1/2;
+                   -a1/2  -a1/2  a1/2 a1/2;
+                     1    1    1    1  ];   % staciakampis etalonineje padetyje
+            if strcmp(direction, 'right')
+                T=[sin(phi) -cos(phi) xc;
+                    cos(phi)  sin(phi) yc;
+                    0         0      1 ];      % transformavimo matrica
+            else
+                T=[cos(phi) -sin(phi) xc;
+                   sin(phi)  cos(phi) yc;
+                    0         0      1 ];      % transformavimo matrica
+            end
+            coord=T*coord
+             pa1 = [coord(1,1)    coord(2,1)]
+             pb1 = [coord(1,2)    coord(2,2)];
+             pc1 = [coord(1,3)    coord(2,3)];
+             pd1 = [coord(1,4)    coord(2,4)];
 
             xc=U2(1)+cor2(1);yc=U2(2)+cor2(2);phi=U2(3)+cor2(3);
             coord=[-a2/2  a2/2  0;
@@ -144,7 +158,7 @@ classdef CollisionDetection
             end
          end
          
-         function colides = detectLineCollision(~, corA1, corA2, corB1, corB2)
+         function colides = detectLineCollision(this, corA1, corA2, corB1, corB2)
              A1 = corA2(2)-corA1(2);
              A2 = corB2(2)-corB1(2);
              B1 = corA1(1)-corA2(1);
@@ -158,26 +172,35 @@ classdef CollisionDetection
              else
                 x = (B2*C1 - B1*C2)/det;
                 y = (A1*C2 - A2*C1)/det;
-                testX1 = corB1(1);
-                testX2 = corB2(1);
-                testY1 = corB1(2);
-                testY2 = corB2(2);
-                if testX1 > testX2
-                    testX1 = corB2(1);
-                    testX2 = corB1(1);
-                end
-                 if testY1 > testY2
-                    testY1 = corY2(1);
-                    testY2 = corY1(1);
-                end
-                if (x > corB1(1) && x < corB2(1)) && (y < corB1(2) && y > corB2(2))
-                    colides = 0;
-                else
-                    colides = 1;
-                end
-                 
+                testCollision = 1;
+                 test = this.isPoint(x, y, corA1, corA2);
+                testCollision = testCollision * test;
+                test = this.isPoint(x, y, corB1, corB2);
+                testCollision = testCollision * test;
+                colides = testCollision;
              end
          end
+         
+         function isPoint = isPointInLine(x, y, p1, p2)
+                testx = [p1(1) p2(1)];
+                testy = [p1(2) p2(2)];
+                
+                if testx(1) > testx(2)
+                    testx(1) = p2(1);
+                    testx(2) = p1(1);
+                end
+                 if testy(1) > testy(2)
+                    testy(1) = p2(2);
+                    testy(2) = p1(2);
+                 end
+                 
+                if (x > testx(1) && x < testx(2)) && (y > testy(1) && y < testy(2))
+                    colides = 1;
+                else
+                    colides = 0;
+                end
+         end
+         
     end
     
 end
