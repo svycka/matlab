@@ -45,7 +45,8 @@ classdef CollisionDetection
               end
               distance = this.findDistance(unrotatedCircleX,unrotatedCircleY,closestX,closestY);
               if(distance < r)
-                  'colision'
+                  rectangle('Position',[cx-r,cy-r,2*r,2*r],'Curvature',[1,1],'FaceColor',[1 0 0]);
+                  'apskritimas kertasi'
               end
          end
          
