@@ -50,9 +50,8 @@ classdef CollisionDetection
          end
          
          function detectRectangleCollision(this, cor1, a1, b1,U1, direction, cor2, a2, b2, U2)
-             %besisukancio
-             %besisukancio
-              xc=U1(1)+cor1(1);yc=U1(2)+cor1(2);phi=U1(3)+cor1(3);
+            %besisukancio kryziaus koordinates
+            xc=U1(1)+cor1(1);yc=U1(2)+cor1(2);phi=U1(3)+cor1(3);
             coord=[-b1/2  b1/2  b1/2 -b1/2;
                    -a1/2  -a1/2  a1/2 a1/2;
                      1    1    1    1  ];   % staciakampis etalonineje padetyje
@@ -66,10 +65,11 @@ classdef CollisionDetection
                     0         0      1 ];      % transformavimo matrica
             end
             coord=T*coord;
+            % sitos koordinates bus toliau naudojamos
              pa1 = [coord(1,1)    coord(2,1)];
              pb1 = [coord(1,2)    coord(2,2)];
              pc1 = [coord(1,3)    coord(2,3)];
-             pd1 = [coord(1,4)    coord(2,4)];;
+             pd1 = [coord(1,4)    coord(2,4)];
              %prijungto
              xc=U2(1)+cor2(1);yc=U2(2)+cor2(2);phi=U2(3)+cor2(3);
             coord=[-a2/2  a2/2  a2/2 -a2/2;
@@ -85,31 +85,31 @@ classdef CollisionDetection
             pd2 = [coord(1,4) coord(2,4)];
             colides = zeros(16,1);
             colides(1) = this.detectLineCollision(pa1, pb1, pa2, pb2);
-            colides(2) = this.detectLineCollision(pa1, pb1, pa2, pc2);
-            colides(3) = this.detectLineCollision(pa1, pb1, pb2, pd2);
-            colides(4) = this.detectLineCollision(pa1, pb1, pc2, pd2);
+            colides(2) = this.detectLineCollision(pa1, pb1, pb2, pc2);
+            colides(3) = this.detectLineCollision(pa1, pb1, pd2, pc2);
+            colides(4) = this.detectLineCollision(pa1, pb1, pa2, pd2);
             
-            colides(5) = this.detectLineCollision(pa1, pc1, pa2, pb2);
-            colides(6) = this.detectLineCollision(pa1, pc1, pa2, pc2);
-            colides(7) = this.detectLineCollision(pa1, pc1, pb2, pd2);
-            colides(8) = this.detectLineCollision(pa1, pc1, pc2, pd2);
+            colides(5) = this.detectLineCollision(pb1, pc1, pa2, pb2);
+            colides(6) = this.detectLineCollision(pb1, pc1, pb2, pc2);
+            colides(7) = this.detectLineCollision(pb1, pc1, pd2, pc2);
+            colides(8) = this.detectLineCollision(pb1, pc1, pa2, pd2);
             
             colides(9) = this.detectLineCollision(pc1, pd1, pa2, pb2);
-            colides(10) = this.detectLineCollision(pc1, pd1, pa2, pc2);
-            colides(11) = this.detectLineCollision(pc1, pd1, pb2, pd2);
-            colides(12) = this.detectLineCollision(pc1, pd1, pc2, pd2);
+            colides(10) = this.detectLineCollision(pc1, pd1, pb2, pc2);
+            colides(11) = this.detectLineCollision(pc1, pd1, pd2, pc2);
+            colides(12) = this.detectLineCollision(pc1, pd1, pa2, pd2);
             
-            colides(13) = this.detectLineCollision(pb1, pd1, pa2, pb2);
-            colides(14) = this.detectLineCollision(pb1, pd1, pa2, pc2);
-            colides(15) = this.detectLineCollision(pb1, pd1, pb2, pd2);
-            colides(16) = this.detectLineCollision(pb1, pd1, pc2, pd2);
+            colides(13) = this.detectLineCollision(pd1, pa1, pa2, pb2);
+            colides(14) = this.detectLineCollision(pd1, pa1, pb2, pc2);
+            colides(15) = this.detectLineCollision(pd1, pa1, pd2, pc2);
+            colides(16) = this.detectLineCollision(pd1, pa1, pa2, pd2);
             
             result = 1;
-            for j=1:16,
+            for j=1:12,
                result = result * colides(j);
             end
             if result == 0
-                'staciakampis kertasi'
+                'stačiakampis kertasi'
             end
          end
          

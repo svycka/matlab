@@ -20,10 +20,10 @@ function main()
         circleCoords = model.construction{2}.cor(1:2) + model.construction{2}.U(1:2);
         circleRad = model.construction{2}.rad;
         for i=3:4
-            rectCoords(i-1,1:3) = model.construction{i}.cor(1:3);
+            rectCoords(i-2,1:3) = model.construction{i}.cor(1:3);
             rectA(i-2) = model.construction{i}.a;
             rectB(i-2) = model.construction{i}.b;
-            rectU(i-1,1:3) = model.construction{i}.U;
+            rectU(i-2,1:3) = model.construction{i}.U;
         end
         for i=5:7
             triCoords(i-4, 1:3) = model.construction{i}.cor(1:3);
@@ -32,34 +32,34 @@ function main()
             triU(i-4, 1:3) = model.construction{i}.U;   
         end                       
         cross1.spinCross(dt);
-        for j=1:3
-            colDetect.detectTriangleCollision(cross1.cor, cross1.b, cross1.a, cross1.U, cross1.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
-            colDetect.detectTriangleCollision(cross1.cor, cross1.a, cross1.b, cross1.U, cross1.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
-        end
-%         for j=1:2
-%             colDetect.detectRectangleCollision(cross1.cor, cross1.a, cross1.b, cross1.U, cross1.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
-%             colDetect.detectRectangleCollision(cross1.cor, cross1.b, cross1.a, cross1.U, cross1.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
+%         for j=1:3
+%             colDetect.detectTriangleCollision(cross1.cor, cross1.b, cross1.a, cross1.U, cross1.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
+%             colDetect.detectTriangleCollision(cross1.cor, cross1.a, cross1.b, cross1.U, cross1.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
 %         end
+         for j=1:2
+             colDetect.detectRectangleCollision(cross1.cor, cross1.a, cross1.b, cross1.U, cross1.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
+             colDetect.detectRectangleCollision(cross1.cor, cross1.b, cross1.a, cross1.U, cross1.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
+         end
 %         colDetect.detectCircleCollision(circleCoords(1), circleCoords(2), circleRad, cross1.a, cross1.b, cross1.cor, cross1.U);
         
          cross2.spinCross(dt);
-        for j=1:3
-            colDetect.detectTriangleCollision(cross2.cor, cross2.b, cross2.a, cross2.U, cross2.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
-            colDetect.detectTriangleCollision(cross2.cor, cross2.a, cross2.b, cross2.U, cross2.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
-        end
-%         for j=1:2
-%             colDetect.detectRectangleCollision(cross2.cor, cross2.a, cross2.b, cross2.U, cross2.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
-%             colDetect.detectRectangleCollision(cross2.cor, cross2.b, cross2.a, cross2.U, cross2.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
+%         for j=1:3
+%             colDetect.detectTriangleCollision(cross2.cor, cross2.b, cross2.a, cross2.U, cross2.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
+%             colDetect.detectTriangleCollision(cross2.cor, cross2.a, cross2.b, cross2.U, cross2.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
 %         end
+         for j=1:2
+             colDetect.detectRectangleCollision(cross2.cor, cross2.a, cross2.b, cross2.U, cross2.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
+             colDetect.detectRectangleCollision(cross2.cor, cross2.b, cross2.a, cross2.U, cross2.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
+         end
         cross3.spinCross(dt);
-        for j=1:3
-            colDetect.detectTriangleCollision(cross3.cor, cross3.b, cross3.a, cross3.U, cross3.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
-            colDetect.detectTriangleCollision(cross3.cor, cross3.a, cross3.b, cross3.U, cross3.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
-        end
-%         for j=1:2
-%             colDetect.detectRectangleCollision(cross3.cor, cross3.a, cross3.b, cross3.U, cross3.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
-%             colDetect.detectRectangleCollision(cross3.cor, cross3.b, cross3.a, cross3.U, cross3.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
+%         for j=1:3
+%             colDetect.detectTriangleCollision(cross3.cor, cross3.b, cross3.a, cross3.U, cross3.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
+%             colDetect.detectTriangleCollision(cross3.cor, cross3.a, cross3.b, cross3.U, cross3.direction, triCoords(j,1:3), triA(j), triB(j), triU(j,1:3));
 %         end
+         for j=1:2
+             colDetect.detectRectangleCollision(cross3.cor, cross3.a, cross3.b, cross3.U, cross3.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
+             colDetect.detectRectangleCollision(cross3.cor, cross3.b, cross3.a, cross3.U, cross3.direction, rectCoords(j,1:3), rectA(j), rectB(j), rectU(j,1:3));
+         end
          pause();
         title(sprintf('t=%g',t));
         pause(dt); 
