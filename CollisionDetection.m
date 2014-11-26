@@ -176,6 +176,7 @@ classdef CollisionDetection
          end
          
          function colides = detectLineCollision(this, corA1, corA2, corB1, corB2)
+
              %Ax + By = C - tieses lygtis
              %A = y2 - y1
              %B = x1 - x2
@@ -201,8 +202,9 @@ classdef CollisionDetection
                 test1 = this.isPointInLine(x, y, corA1, corA2);
                 test2 = this.isPointInLine(x, y, corB1, corB2);
                 %jei taip grazinam colides 0
+
                 if(test1 == 1 && test2 == 1)
-                    plot(x,y,'r.','MarkerSize',20)
+                    plot(x,y,'r*','MarkerSize',5)
                     plot([corA1(1),corA2(1)], [corA1(2),corA2(2)],'r-'); 
                     plot([corB1(1),corB2(1)], [corB1(2),corB2(2)],'r-'); 
                     colides = 0;
