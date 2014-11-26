@@ -49,12 +49,27 @@ classdef CollisionDetection
               end
          end
          
-         function detectRectangleCollision(this, cor1, a1, b1, cor2, a2, b2, U2)
+         function detectRectangleCollision(this, cor1, a1, b1,U1, direction, cor2, a2, b2, U2)
              %besisukancio
-             pa1 = [cor1(1)-a1/2    cor1(2)+b1/2];
-             pb1 = [pa1(1)+a1        pa1(2)];
-             pc1 = [pa1(1)           pa1(2)-b1];
-             pd1 = [pa1(1)+a1         pa1(2)-b1];
+             %besisukancio
+              xc=U1(1)+cor1(1);yc=U1(2)+cor1(2);phi=U1(3)+cor1(3);
+            coord=[-b1/2  b1/2  b1/2 -b1/2;
+                   -a1/2  -a1/2  a1/2 a1/2;
+                     1    1    1    1  ];   % staciakampis etalonineje padetyje
+            if strcmp(direction, 'right')
+                T=[sin(phi) -cos(phi) xc;
+                    cos(phi)  sin(phi) yc;
+                    0         0      1 ];      % transformavimo matrica
+            else
+                T=[cos(phi) -sin(phi) xc;
+                   sin(phi)  cos(phi) yc;
+                    0         0      1 ];      % transformavimo matrica
+            end
+            coord=T*coord;
+             pa1 = [coord(1,1)    coord(2,1)];
+             pb1 = [coord(1,2)    coord(2,2)];
+             pc1 = [coord(1,3)    coord(2,3)];
+             pd1 = [coord(1,4)    coord(2,4)];;
              %prijungto
              xc=U2(1)+cor2(1);yc=U2(2)+cor2(2);phi=U2(3)+cor2(3);
             coord=[-a2/2  a2/2  a2/2 -a2/2;
