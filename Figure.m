@@ -12,14 +12,14 @@ classdef (Abstract) Figure < handle
         deltaF = zeros(1,3);
     end
     methods (Abstract)
-        draw(this) 
-        %addForce(this, spring)
+        draw(this)
+        getCorners(this)
     end
     methods (Access=public)
         function addForce(this, spring)
             % mazgai prie kuriu jungiama spyruokle laiko momentu t -----
             mazgas1 = spring.rightConnectionPoint();
-            mazgas2= spring.leftConnectionPoint(); 
+            mazgas2= spring.leftConnectionPoint();
 
             % Vektorius is centro, i figuros taska prie kurio prijungta spyruokle (perkeltas i koordinaciu sistemos pradzia) 
             vector = spring.getVector();  
@@ -39,14 +39,18 @@ classdef (Abstract) Figure < handle
             % pridedame spyruokles sukurta jega (x,y) asimi ir jegos momenta
             this.deltaF = this.deltaF+[TT +M_kv(3)];    
         end
+        
+        function addDeltaForce(this, force)
+            this.deltaF = this.deltaF+force;    
+        end
 
         function move(this,dt)
             F = this.F +this.deltaF;    % Prie pastoviu jegu pridedam Spyruokles sukurtas jegas (x,y) asimi ir jegos momenta
             this.deltaF = zeros(1,3);
             
             % Pridedamas slopimas proporcingas mazgo greiciui ==============
-            damp_abs = 0.5;
-            F =  F - damp_abs *[this.DU(1),this.DU(2), this.DU(3)];
+%             damp_abs = 0.5;
+%             F =  F - damp_abs *[this.DU(1),this.DU(2), this.DU(3)];
 
             % Pagreitis
             this.DDU=this.pagreitis(F, this.m, this.I); % pagreiciai del isoriniu jegu
@@ -56,6 +60,13 @@ classdef (Abstract) Figure < handle
 
             % POSLINKIAI
             this.U=this.U+dt*this.DU;
+        end
+        
+        function center = getCenter(this)
+            xc=this.U(1)+this.cor(1);
+            yc=this.U(2)+this.cor(2);
+            
+            center = [xc, yc];
         end
     end
     methods (Access=protected)
