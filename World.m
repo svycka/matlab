@@ -10,7 +10,7 @@ classdef World < handle
             this.collisionDetector = CollisionDetection();
             figure1 = FigureCircle(0.3, 2, [-1 1 0]);
              figure1.DU = [3 0 0];
-            figure2 = FigureRectangle(1, 0.3, 2, [1 0 0]);
+            figure2 = FigureCircle(0.3, 2, [1 0 0]);
             figure2.F = [0 -2*9.8 0]/10;
             this.figures = {figure1 figure2};
             

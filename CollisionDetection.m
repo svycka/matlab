@@ -12,9 +12,94 @@ classdef CollisionDetection < handle
          end
         
          function detectCollision(this, figure1, figure2)
-            this.circleAgainstRectangle(figure1, figure2);
+             if (isa(figure1, 'FigureCircle') && isa(figure2, 'FigureRectangle'))
+                this.circleAgainstRectangle(figure1, figure2);
+             elseif (isa(figure2, 'FigureCircle') && isa(figure1, 'FigureRectangle'))
+                 this.circleAgainstRectangle(figure2, figure1);
+                 
+             elseif (isa(figure1, 'FigureRectangle') && isa(figure2, 'FigureRectangle'))
+                 this.RectangleAgainstRectangle(figure1, figure2);
+              
+             elseif (isa(figure1, 'FigureCircle') && isa(figure2, 'FigureCircle'))
+                 this.CircleAgainstCircle(figure1, figure2);
+             else
+                 error('Dar nemoku tokiø kolizijø');
+             end
          end
     
+         function RectangleAgainstRectangle(this, rectangle1, rectangle2)
+            
+            % Kvadratas1
+            C_kv1 = rectangle1.getCenter();
+            coord_kv1=rectangle1.getCorners();
+            DU_kv1 = rectangle1.DU;
+            % Kvadratas2
+            C_kv2 = rectangle2.getCenter();
+            coord_kv2=rectangle2.getCorners();
+            DU_kv2 = rectangle2.DU;
+
+            % Kontakto tikrinimas
+            for i=1:4      % ciklas per kli?ties kra?tines 
+                j = i+1;
+                if j>4, j = 1; end;
+
+                Vi = [coord_kv2(1,i), coord_kv2(2,i)];
+                Vj = [coord_kv2(1,j), coord_kv2(2,j)];
+
+                Sij = (Vj - Vi) / norm(Vj - Vi);
+                
+                for ii=1:4
+                    jj = ii+1;
+                    if jj>4, jj = 1; end;
+                    Vi = [coord_kv2(1,i), coord_kv2(2,i)];
+                    Vj = [coord_kv2(1,j), coord_kv2(2,j)];
+
+                    Sij = (Vj - Vi) / norm(Vj - Vi);
+                    
+                    Pi = C_aps-Vi;                    
+                    K = Vi + Sij * dot(Sij,Pi);
+                    d = K-C_aps;
+
+
+                    if(norm(d) < rad & dot(Sij,Pi)>=0 & dot(Sij,Pi)<=norm(Vj-Vi)),
+
+                        disp('Apskritimas kontaktuoja su briauna'); 
+                    end
+
+
+
+                    if norm(Vi - C_aps) < rad,
+
+                        disp('Apskritimas kontaktuoja su kampu'); 
+                    end
+                end
+            end
+         end
+            
+         function CircleAgainstCircle(this, circle1, circle2)
+            du=circle1.DU;
+            c=circle1.getCenter();
+            rad1=circle1.rad;
+
+            duj=circle2.DU;
+            cj=circle2.getCenter();
+            rad2=circle2.rad;
+
+            n=(cj(1:2)-c(1:2))/norm(cj(1:2)-c(1:2)); tau=[n(2),-n(1)]; %  krypciu vektoriai
+            dlt=dot(c(1:2)-cj(1:2),n)+rad1+rad2; % mazgu igilejimas kontakto metu
+
+            if dlt > 0   % ar kunai kontaktuoja
+                rN= dlt*this.stifp_n+dot(du(1:2),n)*this.dampp_n; if rN<0, rN=0; end
+
+                rT=(dot(du(1:2)-duj(1:2),tau)-(du(3)*rad1-duj(3)*rad2))*this.dampp_t; 
+                if abs(rT)>this.fric*abs(rN), rT=sign(rT)*this.fric*rN; end
+
+                circle1.addDeltaForce(-[rN*n+rT*tau, -rT*rad1]);
+                circle2.addDeltaForce(-[ -rN*n-rT*tau,+rT*rad2]);
+            end
+
+        end
+        
          function circleAgainstRectangle(this, circle, rectangle)
             
             % Apskritimo centras
@@ -105,6 +190,7 @@ classdef CollisionDetection < handle
                     disp('Apskritimas kontaktuoja su kampu'); 
                 end
             end
+            
          end
     end
 end
