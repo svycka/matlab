@@ -12,19 +12,26 @@ classdef CollisionDetection < handle
          end
         
          function detectCollision(this, figure1, figure2)
+             % apskritimas su kvadratu
              if (isa(figure1, 'FigureCircle') && isa(figure2, 'FigureRectangle'))
                 this.circleAgainstRectangle(figure1, figure2);
              elseif (isa(figure2, 'FigureCircle') && isa(figure1, 'FigureRectangle'))
                  this.circleAgainstRectangle(figure2, figure1);
-                 
+             
+             % apskritimas su trikampiu
              elseif (isa(figure1, 'FigureCircle') && isa(figure2, 'FigureTriangle'))
                 this.circleAgainstTriangle(figure1, figure2);
              elseif (isa(figure2, 'FigureCircle') && isa(figure1, 'FigureTriangle'))
                  this.circleAgainstTriangle(figure2, figure1);
                  
+             % du kvadratai
              elseif (isa(figure1, 'FigureRectangle') && isa(figure2, 'FigureRectangle'))
                  this.RectangleAgainstRectangle(figure1, figure2);
-              
+             
+             % TODO: kvadratas su trikampiu
+             % TODO: du trikampiai
+             
+             % du apskritimai
              elseif (isa(figure1, 'FigureCircle') && isa(figure2, 'FigureCircle'))
                  this.CircleAgainstCircle(figure1, figure2);
              else
@@ -48,18 +55,18 @@ classdef CollisionDetection < handle
                 j = i+1;
                 if j>4, j = 1; end;
 
-                Vi = [coord_kv2(1,i), coord_kv2(2,i)];
-                Vj = [coord_kv2(1,j), coord_kv2(2,j)];
+                Vi = [coord_kv1(1,i), coord_kv1(2,i)];
+                Vj = [coord_kv1(1,j), coord_kv1(2,j)];
 
                 Sij = (Vj - Vi) / norm(Vj - Vi);
                 
                 for ii=1:4
                     jj = ii+1;
                     if jj>4, jj = 1; end;
-                    Vi = [coord_kv2(1,i), coord_kv2(2,i)];
-                    Vj = [coord_kv2(1,j), coord_kv2(2,j)];
+                    V2i = [coord_kv2(1,ii), coord_kv2(2,ii)];
+                    V2j = [coord_kv2(1,jj), coord_kv2(2,jj)];
 
-                    Sij = (Vj - Vi) / norm(Vj - Vi);
+                    S2ij = (V2j - V2i) / norm(V2j - V2i);
                     
                     Pi = C_aps-Vi;                    
                     K = Vi + Sij * dot(Sij,Pi);
