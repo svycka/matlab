@@ -18,6 +18,12 @@ classdef FigureRectangle < Figure
         end
 
         function draw(this)
+            coord=this.getCorners();
+            fill(coord(1,:),coord(2,:),[0 0.5 0.7]);
+            return
+        end
+
+        function coord = getCorners(this)
             U = this.U;
             cor = this.cor;
             a = this.a;
@@ -31,8 +37,6 @@ classdef FigureRectangle < Figure
                sin(phi)  cos(phi) yc;
                   0         0      1 ];      % transformavimo matrica
             coord=T*coord;
-            fill(coord(1,:),coord(2,:),[0 0.5 0.7]);
-            return
         end
     end
     
