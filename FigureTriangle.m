@@ -17,11 +17,17 @@ classdef FigureTriangle < Figure
         end
 
         function draw(this)
+            coord=this.getCorners();
+            fill(coord(1,:),coord(2,:),[0 0.5 0.7]);
+        return 
+        end
+        
+        function coord = getCorners(this)
             U = this.U;
             cor = this.cor;
             a = this.a;
             b = this.b;
-
+            
             xc=U(1)+cor(1);yc=U(2)+cor(2);phi=U(3)+cor(3);
             coord=[-a/2  a/2  0;
                    -b/2 -b/2  b/2;
@@ -31,8 +37,6 @@ classdef FigureTriangle < Figure
                sin(phi)  cos(phi) yc;
                   0         0      1 ];      % transformavimo matrica
             coord=T*coord;
-            fill(coord(1,:),coord(2,:),[0 0.5 0.7]);
-        return 
         end
     end
     
