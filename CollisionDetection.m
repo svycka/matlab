@@ -69,9 +69,9 @@ classdef CollisionDetection < handle
                         test1=sqrt((cor(1)-Vi(1))^2+(cor(2)-Vi(2))^2);
                         test2=sqrt((cor(1)-Vj(1))^2+(cor(2)-Vj(2))^2);
                         if(test1 < test2)
-                            rad = Vi;
+                            rad = sqrt((kv1_c(1)-Vi(1))^2+(kv1_c(2)-Vi(2))^2);
                         else
-                            rad = Vj;
+                            rad = sqrt((kv1_c(1)-Vj(1))^2+(kv1_c(2)-Vj(2))^2);
                         end
                         plot([kv1_c(1),cor(1)], [kv1_c(2),cor(2)],'r-');
                         C_aps=kv1_c;
