@@ -6,12 +6,13 @@ function main()
     model = World();
     figure(1);axis equal;axis([xmin,xmax,ymin,ymax]);hold on, grid on
     for t=0:dt:TT
-        cla;hold on;
-        model.move(dt);
         model.draw();
+        model.move(dt);
+%         model.draw();
         
         title(sprintf('t=%g',t));
         pause(dt); 
+        cla;hold on;
     end
 
 end

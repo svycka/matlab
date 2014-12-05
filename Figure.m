@@ -10,6 +10,7 @@ classdef (Abstract) Figure < handle
         phi; % pradinis posukio kampas
         cor; % pradines figuros kordinates
         deltaF = zeros(1,3);
+        static=0;
     end
     methods (Abstract)
         draw(this)
@@ -45,6 +46,9 @@ classdef (Abstract) Figure < handle
         end
 
         function move(this,dt)
+            if (this.static == 1)
+                return
+            end
             F = this.F +this.deltaF;    % Prie pastoviu jegu pridedam Spyruokles sukurtas jegas (x,y) asimi ir jegos momenta
             this.deltaF = zeros(1,3);
             
