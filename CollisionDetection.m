@@ -1,6 +1,6 @@
 classdef CollisionDetection < handle
     properties
-        stifp_n=50000;     % baudos standumai(smugio saveikoms)
+        stifp_n=5000;     % baudos standumai(smugio saveikoms)
         dampp_n=50;        % baudos normaliniai klampumai(smugio saveikoms)
         dampp_t=50;        % baudos tangentiniai klampumai(smugio saveikoms)
         fric=0.3;
@@ -36,7 +36,7 @@ classdef CollisionDetection < handle
              elseif (isa(figure1, 'FigureCircle') && isa(figure2, 'FigureCircle'))
                  this.CircleAgainstCircle(figure1, figure2);
              else
-                 error('Dar nemoku tokiø kolizijø');
+                 error('Dar nemoku tokiï¿½ kolizijï¿½');
              end
          end
     
@@ -82,25 +82,25 @@ classdef CollisionDetection < handle
                         d = K-C_aps;
                         dlt = rad - norm(d);
 
-                        % Normalës vektorius apskritimo ir kvadrato
+                        % Normalï¿½s vektorius apskritimo ir kvadrato
                         n_aps =  (C_aps - K) / norm (C_aps - K); tau_aps=[n_aps(2),-n_aps(1)];
-                        n_kv = -n_aps;tau_kv=[n_kv(2),-n_kv(1)]; % kvadrato normalës vektorius turi bûti statmenas kontakto plokðtumai, o ne iðkeltas ið centro
+                        n_kv = -n_aps;tau_kv=[n_kv(2),-n_kv(1)]; % kvadrato normalï¿½s vektorius turi bï¿½ti statmenas kontakto plokï¿½tumai, o ne iï¿½keltas iï¿½ centro
 
-                        % Jëgos veikianèios apskritimà statmenai normalës vektoriui (statmenos susidûrimo taðkui)
+                        % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai normalï¿½s vektoriui (statmenos susidï¿½rimo taï¿½kui)
                         rN_aps  = dlt*this.stifp_n-dot(DU_aps(1:2) - DU_kv(1:2),n_aps)*this.dampp_n; if rN_aps<0, rN_aps=0; end
                         rN_kv   = dlt*this.stifp_n-dot(DU_kv(1:2)- DU_aps(1:2),n_kv)*this.dampp_n;   if rN_kv<0, rN_kv=0; end
 
-                        % Jëgos veikianèios apskritimà statmenai tangentës vektoriui (susidûrimo taðko liestinë)
+                        % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai tangentï¿½s vektoriui (susidï¿½rimo taï¿½ko liestinï¿½)
                         rT_aps=(dot(DU_aps(1:2)-DU_kv(1:2),tau_aps) +(DU_aps(3)*rad) - DU_kv(3) * norm(C_aps-K))*this.dampp_t;  %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
                         if abs(rT_aps)>this.fric*abs(rN_aps), rT_aps=sign(rT_aps)*this.fric*rN_aps; end % Slydimo trintis
 
                         rT_kv=(dot(DU_kv(1:2) - DU_aps(1:2),tau_kv) + (DU_kv(3) * norm(C_aps-K) - DU_aps(3)*rad))*this.dampp_t; %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
                         if abs(rT_kv)>this.fric*abs(rN_kv), rT_kv=sign(rT_kv)*this.fric*rN_kv; end % Slydimo trintis
 
-                        % apskritimà veikianti jëga
+                        % apskritimï¿½ veikianti jï¿½ga
                         rectangle1.addDeltaForce(-[-rN_aps*n_aps+rT_aps*tau_aps, rT_aps*rad]);
 
-                        % kvadratà veikianti jëga
+                        % kvadratï¿½ veikianti jï¿½ga
                         r = [K-C_kv, 0];
                         mom=cross(r,rN_kv*[n_kv, 0]-rT_kv*[tau_kv, 0]); 
                         rectangle2.addDeltaForce(-[-rN_kv*n_kv+rT_kv*tau_kv, -mom(3)]);
@@ -221,25 +221,25 @@ classdef CollisionDetection < handle
                 if(norm(d) < rad & dot(Sij,Pi)>=0 & dot(Sij,Pi)<=norm(Vj-Vi)),
                     dlt = rad - norm(d);
 
-                    % Normalës vektorius apskritimo ir kvadrato
+                    % Normalï¿½s vektorius apskritimo ir kvadrato
                     n_aps =  (C_aps - K) / norm (C_aps - K); tau_aps=[n_aps(2),-n_aps(1)];
-                    n_kv = -n_aps;tau_kv=[n_kv(2),-n_kv(1)]; % kvadrato normalës vektorius turi bûti statmenas kontakto plokðtumai, o ne iðkeltas ið centro
+                    n_kv = -n_aps;tau_kv=[n_kv(2),-n_kv(1)]; % kvadrato normalï¿½s vektorius turi bï¿½ti statmenas kontakto plokï¿½tumai, o ne iï¿½keltas iï¿½ centro
 
-                    % Jëgos veikianèios apskritimà statmenai normalës vektoriui (statmenos susidûrimo taðkui)
+                    % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai normalï¿½s vektoriui (statmenos susidï¿½rimo taï¿½kui)
                     rN_aps  = dlt*this.stifp_n-dot(DU_aps(1:2) - DU_kv(1:2),n_aps)*this.dampp_n; if rN_aps<0, rN_aps=0; end
                     rN_kv   = dlt*this.stifp_n-dot(DU_kv(1:2)- DU_aps(1:2),n_kv)*this.dampp_n;   if rN_kv<0, rN_kv=0; end
 
-                    % Jëgos veikianèios apskritimà statmenai tangentës vektoriui (susidûrimo taðko liestinë)
+                    % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai tangentï¿½s vektoriui (susidï¿½rimo taï¿½ko liestinï¿½)
                     rT_aps=(dot(DU_aps(1:2)-DU_kv(1:2),tau_aps) +(DU_aps(3)*rad) - DU_kv(3) * norm(C_aps-K))*this.dampp_t;  %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
                     if abs(rT_aps)>this.fric*abs(rN_aps), rT_aps=sign(rT_aps)*this.fric*rN_aps; end % Slydimo trintis
 
                     rT_kv=(dot(DU_kv(1:2) - DU_aps(1:2),tau_kv) + (DU_kv(3) * norm(C_aps-K) - DU_aps(3)*rad))*this.dampp_t; %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
                     if abs(rT_kv)>this.fric*abs(rN_kv), rT_kv=sign(rT_kv)*this.fric*rN_kv; end % Slydimo trintis
 
-                    % apskritimà veikianti jëga
+                    % apskritimï¿½ veikianti jï¿½ga
                     circle.addDeltaForce(-[-rN_aps*n_aps+rT_aps*tau_aps, rT_aps*rad]);
 
-                    % kvadratà veikianti jëga
+                    % kvadratï¿½ veikianti jï¿½ga
                     r = [K-C_kv, 0];
                     mom=cross(r,rN_kv*[n_kv, 0]-rT_kv*[tau_kv, 0]); 
                     rectangle.addDeltaForce(-[-rN_kv*n_kv+rT_kv*tau_kv, -mom(3)]);
@@ -250,31 +250,31 @@ classdef CollisionDetection < handle
 
 
                 if norm(Vi - C_aps) < rad,
-                    % Kontakto taðkas K = virðûnei
+                    % Kontakto taï¿½kas K = virï¿½ï¿½nei
                     K = Vi;
-                    % Perskaièiuojamas "ágilëjimo atstumas"
+                    % Perskaiï¿½iuojamas "ï¿½gilï¿½jimo atstumas"
                     dlt = rad - norm(Vi - C_aps);
 
-                    % Kaip kontakte su plokðtuma ----------------------------------
-                    % Normalës vektorius apskritimo ir kvadrato
+                    % Kaip kontakte su plokï¿½tuma ----------------------------------
+                    % Normalï¿½s vektorius apskritimo ir kvadrato
                     n_aps =  (C_aps - K) / norm (C_aps - K); tau_aps=[n_aps(2),-n_aps(1)];
-                    n_kv = -n_aps;tau_kv=[n_kv(2),-n_kv(1)]; % kvadrato normalës vektorius turi bûti statmenas kontakto plokðtumai, o ne iðkeltas ið centro
+                    n_kv = -n_aps;tau_kv=[n_kv(2),-n_kv(1)]; % kvadrato normalï¿½s vektorius turi bï¿½ti statmenas kontakto plokï¿½tumai, o ne iï¿½keltas iï¿½ centro
 
-                    % Jëgos veikianèios apskritimà statmenai normalës vektoriui (statmenos susidûrimo taðkui)
+                    % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai normalï¿½s vektoriui (statmenos susidï¿½rimo taï¿½kui)
                     rN_aps  = dlt*this.stifp_n-dot(DU_aps(1:2) - DU_kv(1:2),n_aps)*this.dampp_n; if rN_aps<0, rN_aps=0; end
                     rN_kv   = dlt*this.stifp_n-dot(DU_kv(1:2)- DU_aps(1:2),n_kv)*this.dampp_n;   if rN_kv<0, rN_kv=0; end
 
-                    % Jëgos veikianèios apskritimà statmenai tangentës vektoriui (susidûrimo taðko liestinë)
+                    % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai tangentï¿½s vektoriui (susidï¿½rimo taï¿½ko liestinï¿½)
                     rT_aps=(dot(DU_aps(1:2)-DU_kv(1:2),tau_aps) +(DU_aps(3)*rad) - DU_kv(3) * norm(C_aps-K))*this.dampp_t;  %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
                     if abs(rT_aps)>this.fric*abs(rN_aps), rT_aps=sign(rT_aps)*this.fric*rN_aps; end % Slydimo trintis
 
                     rT_kv=(dot(DU_kv(1:2) - DU_aps(1:2),tau_kv) + (DU_kv(3) * norm(C_aps-K) - DU_aps(3)*rad))*this.dampp_t; %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
                     if abs(rT_kv)>this.fric*abs(rN_kv), rT_kv=sign(rT_kv)*this.fric*rN_kv; end % Slydimo trintis
 
-                    % apskritimà veikianti jëga
+                    % apskritimï¿½ veikianti jï¿½ga
                     circle.addDeltaForce(-[-rN_aps*n_aps+rT_aps*tau_aps, rT_aps*rad]);
 
-                    % kvadratà veikianti jëga
+                    % kvadratï¿½ veikianti jï¿½ga
                     r = [K-C_kv, 0];
                     mom=cross(r,rN_kv*[n_kv, 0]-rT_kv*[tau_kv, 0]); 
                     rectangle.addDeltaForce(-[-rN_kv*n_kv+rT_kv*tau_kv, -mom(3)]);
@@ -313,25 +313,25 @@ classdef CollisionDetection < handle
                 if(norm(d) < rad & dot(Sij,Pi)>=0 & dot(Sij,Pi)<=norm(Vj-Vi)),
                     dlt = rad - norm(d);
 
-                    % Normalës vektorius apskritimo ir kvadrato
+                    % Normalï¿½s vektorius apskritimo ir kvadrato
                     n_aps =  (C_aps - K) / norm (C_aps - K); tau_aps=[n_aps(2),-n_aps(1)];
-                    n_kv = -n_aps;tau_kv=[n_kv(2),-n_kv(1)]; % kvadrato normalës vektorius turi bûti statmenas kontakto plokðtumai, o ne iðkeltas ið centro
+                    n_kv = -n_aps;tau_kv=[n_kv(2),-n_kv(1)]; % kvadrato normalï¿½s vektorius turi bï¿½ti statmenas kontakto plokï¿½tumai, o ne iï¿½keltas iï¿½ centro
 
-                    % Jëgos veikianèios apskritimà statmenai normalës vektoriui (statmenos susidûrimo taðkui)
+                    % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai normalï¿½s vektoriui (statmenos susidï¿½rimo taï¿½kui)
                     rN_aps  = dlt*this.stifp_n-dot(DU_aps(1:2) - DU_kv(1:2),n_aps)*this.dampp_n; if rN_aps<0, rN_aps=0; end
                     rN_kv   = dlt*this.stifp_n-dot(DU_kv(1:2)- DU_aps(1:2),n_kv)*this.dampp_n;   if rN_kv<0, rN_kv=0; end
 
-                    % Jëgos veikianèios apskritimà statmenai tangentës vektoriui (susidûrimo taðko liestinë)
+                    % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai tangentï¿½s vektoriui (susidï¿½rimo taï¿½ko liestinï¿½)
                     rT_aps=(dot(DU_aps(1:2)-DU_kv(1:2),tau_aps) +(DU_aps(3)*rad) - DU_kv(3) * norm(C_aps-K))*this.dampp_t;  %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
                     if abs(rT_aps)>this.fric*abs(rN_aps), rT_aps=sign(rT_aps)*this.fric*rN_aps; end % Slydimo trintis
 
                     rT_kv=(dot(DU_kv(1:2) - DU_aps(1:2),tau_kv) + (DU_kv(3) * norm(C_aps-K) - DU_aps(3)*rad))*this.dampp_t; %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
                     if abs(rT_kv)>this.fric*abs(rN_kv), rT_kv=sign(rT_kv)*this.fric*rN_kv; end % Slydimo trintis
 
-                    % apskritimà veikianti jëga
+                    % apskritimï¿½ veikianti jï¿½ga
                     circle.addDeltaForce(-[-rN_aps*n_aps+rT_aps*tau_aps, rT_aps*rad]);
 
-                    % kvadratà veikianti jëga
+                    % kvadratï¿½ veikianti jï¿½ga
                     r = [K-C_kv, 0];
                     mom=cross(r,rN_kv*[n_kv, 0]-rT_kv*[tau_kv, 0]); 
                     triangle.addDeltaForce(-[-rN_kv*n_kv+rT_kv*tau_kv, -mom(3)]);
@@ -342,31 +342,31 @@ classdef CollisionDetection < handle
 
 
                 if norm(Vi - C_aps) < rad,
-                    % Kontakto taðkas K = virðûnei
+                    % Kontakto taï¿½kas K = virï¿½ï¿½nei
                     K = Vi;
-                    % Perskaièiuojamas "ágilëjimo atstumas"
+                    % Perskaiï¿½iuojamas "ï¿½gilï¿½jimo atstumas"
                     dlt = rad - norm(Vi - C_aps);
 
-                    % Kaip kontakte su plokðtuma ----------------------------------
-                    % Normalës vektorius apskritimo ir kvadrato
+                    % Kaip kontakte su plokï¿½tuma ----------------------------------
+                    % Normalï¿½s vektorius apskritimo ir kvadrato
                     n_aps =  (C_aps - K) / norm (C_aps - K); tau_aps=[n_aps(2),-n_aps(1)];
-                    n_kv = -n_aps;tau_kv=[n_kv(2),-n_kv(1)]; % kvadrato normalës vektorius turi bûti statmenas kontakto plokðtumai, o ne iðkeltas ið centro
+                    n_kv = -n_aps;tau_kv=[n_kv(2),-n_kv(1)]; % kvadrato normalï¿½s vektorius turi bï¿½ti statmenas kontakto plokï¿½tumai, o ne iï¿½keltas iï¿½ centro
 
-                    % Jëgos veikianèios apskritimà statmenai normalës vektoriui (statmenos susidûrimo taðkui)
+                    % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai normalï¿½s vektoriui (statmenos susidï¿½rimo taï¿½kui)
                     rN_aps  = dlt*this.stifp_n-dot(DU_aps(1:2) - DU_kv(1:2),n_aps)*this.dampp_n; if rN_aps<0, rN_aps=0; end
                     rN_kv   = dlt*this.stifp_n-dot(DU_kv(1:2)- DU_aps(1:2),n_kv)*this.dampp_n;   if rN_kv<0, rN_kv=0; end
 
-                    % Jëgos veikianèios apskritimà statmenai tangentës vektoriui (susidûrimo taðko liestinë)
+                    % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai tangentï¿½s vektoriui (susidï¿½rimo taï¿½ko liestinï¿½)
                     rT_aps=(dot(DU_aps(1:2)-DU_kv(1:2),tau_aps) +(DU_aps(3)*rad) - DU_kv(3) * norm(C_aps-K))*this.dampp_t;  %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
                     if abs(rT_aps)>this.fric*abs(rN_aps), rT_aps=sign(rT_aps)*this.fric*rN_aps; end % Slydimo trintis
 
                     rT_kv=(dot(DU_kv(1:2) - DU_aps(1:2),tau_kv) + (DU_kv(3) * norm(C_aps-K) - DU_aps(3)*rad))*this.dampp_t; %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
                     if abs(rT_kv)>this.fric*abs(rN_kv), rT_kv=sign(rT_kv)*this.fric*rN_kv; end % Slydimo trintis
 
-                    % apskritimà veikianti jëga
+                    % apskritimï¿½ veikianti jï¿½ga
                     circle.addDeltaForce(-[-rN_aps*n_aps+rT_aps*tau_aps, rT_aps*rad]);
 
-                    % kvadratà veikianti jëga
+                    % kvadratï¿½ veikianti jï¿½ga
                     r = [K-C_kv, 0];
                     mom=cross(r,rN_kv*[n_kv, 0]-rT_kv*[tau_kv, 0]); 
                     triangle.addDeltaForce(-[-rN_kv*n_kv+rT_kv*tau_kv, -mom(3)]);
