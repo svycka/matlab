@@ -1,6 +1,6 @@
 classdef CollisionDetection < handle
     properties
-        stifp_n=5000;     % baudos standumai(smugio saveikoms)
+        stifp_n=50000;     % baudos standumai(smugio saveikoms)
         dampp_n=50;        % baudos normaliniai klampumai(smugio saveikoms)
         dampp_t=50;        % baudos tangentiniai klampumai(smugio saveikoms)
         fric=0.3;
@@ -27,7 +27,6 @@ classdef CollisionDetection < handle
              % du kvadratai
              elseif (isa(figure1, 'FigureRectangle') && isa(figure2, 'FigureRectangle'))
                  this.RectangleAgainstRectangle(figure1, figure2);
-                 this.RectangleAgainstRectangle(figure2, figure1);
              
              % TODO: kvadratas su trikampiu
              % TODO: du trikampiai
@@ -41,15 +40,12 @@ classdef CollisionDetection < handle
          end
     
          function RectangleAgainstRectangle(this, rectangle1, rectangle2)
-            %(this, cor1, a1, b1,U1, direction, cor2, a2, b2, U2)
-            %besisukancio kryziaus koordinates
-            
             coord1=rectangle1.getCorners();
             kv1_c=rectangle1.getCenter();
             %prijungto
             coord2=rectangle2.getCorners();
             kv2_c=rectangle2.getCenter();
-            
+
             for i=1:4      % ciklas per kli?ties kra?tines 
                 j = i+1;
                 if j>4, j = 1; end;
@@ -62,9 +58,10 @@ classdef CollisionDetection < handle
 
                     Vi2 = [coord2(1,i2), coord2(2,i2)];
                     Vj2 = [coord2(1,j2), coord2(2,j2)];
-                    
+
                     [colides, cor] = this.detectLineCollision(Vi, Vj, Vi2, Vj2);
                     if (colides == 1)
+%                         'susikerta',[i,j], [i2,j2]
                         plot(cor(1),cor(2),'r*','MarkerSize',5)
                         test1=sqrt((cor(1)-Vi(1))^2+(cor(2)-Vi(2))^2);
                         test2=sqrt((cor(1)-Vj(1))^2+(cor(2)-Vj(2))^2);
@@ -74,39 +71,43 @@ classdef CollisionDetection < handle
                             rad = sqrt((kv1_c(1)-Vj(1))^2+(kv1_c(2)-Vj(2))^2);
                         end
                         plot([kv1_c(1),cor(1)], [kv1_c(2),cor(2)],'r-');
-                        C_aps=kv1_c;
-                        C_kv=kv2_c;
+                        C_kv1=kv1_c;
+                        C_kv2=kv2_c;
                         K=cor;
-                        DU_aps=rectangle1.DU;
-                        DU_kv=rectangle2.DU;
-                        d = K-C_aps;
+                        DU_kv1=rectangle1.DU;
+                        DU_kv2=rectangle2.DU;
+                        d = K-C_kv1;
                         dlt = rad - norm(d);
 
-                        % Normalï¿½s vektorius apskritimo ir kvadrato
-                        n_aps =  (C_aps - K) / norm (C_aps - K); tau_aps=[n_aps(2),-n_aps(1)];
-                        n_kv = -n_aps;tau_kv=[n_kv(2),-n_kv(1)]; % kvadrato normalï¿½s vektorius turi bï¿½ti statmenas kontakto plokï¿½tumai, o ne iï¿½keltas iï¿½ centro
+                        % Normalës vektorius apskritimo ir kvadrato
+                        n_kv1 =  (C_kv1 - K) / norm (C_kv1 - K); tau_kv1=[n_kv1(2),-n_kv1(1)];
+                        n_kv2 = -n_kv1;tau_kv2=[n_kv2(2),-n_kv2(1)]; % kvadrato normalës vektorius turi bûti statmenas kontakto plokðtumai, o ne iðkeltas ið centro
 
-                        % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai normalï¿½s vektoriui (statmenos susidï¿½rimo taï¿½kui)
-                        rN_aps  = dlt*this.stifp_n-dot(DU_aps(1:2) - DU_kv(1:2),n_aps)*this.dampp_n; if rN_aps<0, rN_aps=0; end
-                        rN_kv   = dlt*this.stifp_n-dot(DU_kv(1:2)- DU_aps(1:2),n_kv)*this.dampp_n;   if rN_kv<0, rN_kv=0; end
+                        % Jëgos veikianèios apskritimà statmenai normalës vektoriui (statmenos susidûrimo taðkui)
+                        rN_kv1  = dlt*this.stifp_n-dot(DU_kv1(1:2) - DU_kv2(1:2),n_kv1)*this.dampp_n; if rN_kv1<0, rN_kv1=0; end
+                        rN_kv2  = dlt*this.stifp_n-dot(DU_kv2(1:2) - DU_kv1(1:2),n_kv2)*this.dampp_n; if rN_kv2<0, rN_kv2=0; end
 
-                        % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai tangentï¿½s vektoriui (susidï¿½rimo taï¿½ko liestinï¿½)
-                        rT_aps=(dot(DU_aps(1:2)-DU_kv(1:2),tau_aps) +(DU_aps(3)*rad) - DU_kv(3) * norm(C_aps-K))*this.dampp_t;  %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
-                        if abs(rT_aps)>this.fric*abs(rN_aps), rT_aps=sign(rT_aps)*this.fric*rN_aps; end % Slydimo trintis
+                        % Jëgos veikianèios apskritimà statmenai tangentës vektoriui (susidûrimo taðko liestinë)
+                        rT_kv1=(dot(DU_kv1(1:2)-DU_kv2(1:2),tau_kv1) +(DU_kv1(3)*rad) - DU_kv2(3) * norm(C_kv1-K))*this.dampp_t;  %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
+                        if abs(rT_kv1)>this.fric*abs(rN_kv1), rT_kv1=sign(rT_kv1)*this.fric*rN_kv1; end % Slydimo trintis
 
-                        rT_kv=(dot(DU_kv(1:2) - DU_aps(1:2),tau_kv) + (DU_kv(3) * norm(C_aps-K) - DU_aps(3)*rad))*this.dampp_t; %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
-                        if abs(rT_kv)>this.fric*abs(rN_kv), rT_kv=sign(rT_kv)*this.fric*rN_kv; end % Slydimo trintis
+                        rT_kv2=(dot(DU_kv2(1:2)-DU_kv1(1:2),tau_kv2) +(DU_kv2(3) * norm(C_kv1-K) - DU_kv1(3)*rad))*this.dampp_t; %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
+                        if abs(rT_kv2)>this.fric*abs(rN_kv2), rT_kv2=sign(rT_kv2)*this.fric*rN_kv2; end % Slydimo trintis
 
-                        % apskritimï¿½ veikianti jï¿½ga
-                        rectangle1.addDeltaForce(-[-rN_aps*n_aps+rT_aps*tau_aps, rT_aps*rad]);
+                        % apskritimà veikianti jëga
+                        r = [K-C_kv1, 0];
+                        mom=cross(r,rN_kv1*[n_kv1, 0]-rT_kv1*[tau_kv1, 0]); 
+                        rectangle1.addDeltaForce(-[-rN_kv1*n_kv1+rT_kv1*tau_kv1, -mom(3)]);
+%                         rectangle1.addDeltaForce(-[-rN_kv1*n_kv1+rT_kv1*tau_kv1, rT_kv1*rad]);
 
-                        % kvadratï¿½ veikianti jï¿½ga
-                        r = [K-C_kv, 0];
-                        mom=cross(r,rN_kv*[n_kv, 0]-rT_kv*[tau_kv, 0]); 
-                        rectangle2.addDeltaForce(-[-rN_kv*n_kv+rT_kv*tau_kv, -mom(3)]);
-
+                        % kvadratà veikianti jëga
+                        r = [K-C_kv2, 0];
+                        mom=cross(r,rN_kv2*[n_kv2, 0]-rT_kv2*[tau_kv2, 0]); 
+                        rectangle2.addDeltaForce(-[-rN_kv2*n_kv2+rT_kv2*tau_kv2, -mom(3)]);
+%                         break
                     end
                 end
+                i=i+1;
             end
          end
        function [colides, cor] = detectLineCollision(this, corA1, corA2, corB1, corB2)
