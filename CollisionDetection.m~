@@ -27,7 +27,7 @@ classdef CollisionDetection < handle
              % du kvadratai
              elseif (isa(figure1, 'FigureRectangle') && isa(figure2, 'FigureRectangle'))
                  this.RectangleAgainstRectangle(figure1, figure2);
-                 this.RectangleAgainstRectangle(figure2, figure1);
+             
              % TODO: kvadratas su trikampiu
              % TODO: du trikampiai
              
@@ -97,12 +97,12 @@ classdef CollisionDetection < handle
                         r = [K-C_kv1, 0];
                         mom=cross(r,rN_kv1*[n_kv1, 0]-rT_kv1*[tau_kv1, 0]); 
                         rectangle1.addDeltaForce(-[-rN_kv1*n_kv1+rT_kv1*tau_kv1, -mom(3)]);
-                         rectangle1.addDeltaForce(-[-rN_kv1*n_kv1+rT_kv1*tau_kv1, rT_kv1*rad]);
-                        rectangle2.addDeltaForce([-rN_kv1*n_kv1+rT_kv1*tau_kv1, -rT_kv1*rad]);
+%                         rectangle1.addDeltaForce(-[-rN_kv1*n_kv1+rT_kv1*tau_kv1, rT_kv1*rad]);
+
                         % kvadrat� veikianti j�ga
                         r = [K-C_kv2, 0];
                         mom=cross(r,rN_kv2*[n_kv2, 0]-rT_kv2*[tau_kv2, 0]); 
-                       % rectangle2.addDeltaForce(-[-rN_kv2*n_kv2+rT_kv2*tau_kv2, -mom(3)]);
+                        rectangle2.addDeltaForce(-[-rN_kv2*n_kv2+rT_kv2*tau_kv2, -mom(3)]);
 %                         break
                     end
                 end
