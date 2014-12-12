@@ -42,6 +42,9 @@ classdef (Abstract) Figure < handle
         end
         
         function addDeltaForce(this, force)
+            if (this.static == 1)
+                return
+            end
             this.deltaF = this.deltaF+force;    
         end
 
@@ -53,8 +56,8 @@ classdef (Abstract) Figure < handle
             this.deltaF = zeros(1,3);
             
             % Pridedamas slopimas proporcingas mazgo greiciui ==============
-%             damp_abs = 0.5;
-%             F =  F - damp_abs *[this.DU(1),this.DU(2), this.DU(3)];
+            damp_abs = 0.5;
+            F =  F - damp_abs *[this.DU(1),this.DU(2), this.DU(3)];
 
             % Pagreitis
             this.DDU=this.pagreitis(F, this.m, this.I); % pagreiciai del isoriniu jegu
