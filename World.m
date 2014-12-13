@@ -8,15 +8,15 @@ classdef World < handle
     methods
         function this = World()
             this.collisionDetector = CollisionDetection();
-            figure1 = FigureRectangle(1, 1, 2, [1 1.5 0]);
-            figure3 = FigureRectangle(2, 1, 2, [1 3 0]);
+            figure1 = FigureRectangle(1, 1, 2, [1 1.5 3]);
+           % figure3 = FigureRectangle(1, 1, 2, [1 3 0]);
 %             figure1 = FigureCircle(1, 2, [1.05 2 0]);
 %              figure1.DU = [3 0 0];
-            figure2 = FigureRectangle(2, 2, 2, [1 0 0]);
+            figure2 = FigureRectangle(1, 1, 2, [1 0 0]);
             figure2.F = [0 0 0]/10;
             figure2.static = 1;
             this.figures = {figure1 figure2};
-            this.figures = {figure1 figure2 figure3};
+           % this.figures = {figure1 figure2 figure3};
             
         end
         

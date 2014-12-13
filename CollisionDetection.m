@@ -82,8 +82,7 @@ classdef CollisionDetection < handle
                         d = C_kv1-krastines_centras;
                         dlt = rad - norm(d);
                         
-                        %gediminas skaiciavo delta
-                        %atstumas iki ilindusios ties nuo kv centro
+                        %kampo ilindimo delta
                         A = Vj2(2)-Vi2(2);
                         B = Vi2(1)-Vj2(1);
                         C = A * Vj2(1) + B * Vj2(2);
