@@ -1,7 +1,7 @@
 function main()
     clear all;clc;
     xmin=-3; xmax=3; ymin=-4; ymax=4;     % paveikslo ribos
-    dt = 0.0005;
+    dt = 0.001;
      TT = 10;
     model = World();
     figure(1);axis equal;axis([xmin,xmax,ymin,ymax]);hold on, grid on

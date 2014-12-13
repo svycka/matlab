@@ -87,7 +87,8 @@ classdef CollisionDetection < handle
                         A = Vj2(2)-Vi2(2);
                         B = Vi2(1)-Vj2(1);
                         C = A * Vj2(1) + B * Vj2(2);
-                        dlt = abs(A * col(1) + B * col(2) - C)/sqrt(A*A+B*B)
+                        delta2 = abs(A * C_kv1(1) + B * C_kv1(2) - C)/sqrt(A*A+B*B)
+                        dlt = 0.5 - delta2;
                         %---------------------------ENDLN;
                         
                         
@@ -100,7 +101,7 @@ classdef CollisionDetection < handle
 % % % % 
 % % % % pause
                         % Normal�s vektorius apskritimo ir kvadrato
-                        n_kv1 =  (C_kv1 - krastines_centras) / norm (C_kv1 - krastines_centras); tau_kv1=[n_kv1(2),-n_kv1(1)];
+                        n_kv1 =  (C_kv1 - K) / norm (C_kv1 - K); tau_kv1=[n_kv1(2),-n_kv1(1)];
                         n_kv2 = -n_kv1;tau_kv2=[n_kv2(2),-n_kv2(1)]; % kvadrato normal�s vektorius turi b�ti statmenas kontakto plok�tumai, o ne i�keltas i� centro
 
                         % J�gos veikian�ios apskritim� statmenai normal�s vektoriui (statmenos susid�rimo ta�kui)
