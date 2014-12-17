@@ -8,16 +8,41 @@ classdef World < handle
     methods
         function this = World()
             this.collisionDetector = CollisionDetection();
-            figure1 = FigureRectangle(1, 1, 2, [1 1.5 3]);
-           % figure3 = FigureRectangle(1, 1, 2, [1 3 0]);
-%             figure1 = FigureCircle(1, 2, [1.05 2 0]);
-%              figure1.DU = [3 0 0];
-            figure2 = FigureRectangle(1, 1, 2, [1 0 0]);
-            figure2.F = [0 0 0]/10;
-            figure2.static = 1;
-            this.figures = {figure1 figure2};
-           % this.figures = {figure1 figure2 figure3};
             
+            % add walls
+            figure_hor = FigureRectangle(16, 1, 1, [0 -4 0]);
+            figure_ver1 = FigureRectangle(1, 8, 1, [-2 0 0]);
+            figure_ver2 = FigureRectangle(1, 8, 1, [6 0 0]);
+            figure_hor.static = 1;
+            figure_ver1.static = 1;
+            figure_ver2.static = 1;
+            this.addFigure(figure_hor);
+            this.addFigure(figure_ver1);
+            this.addFigure(figure_ver2);
+            this.addFigure(FigureTriangle(1, 2, [2 -2 0]));
+            this.addFigure(FigureTriangle(1, 2, [2 -3 0]));
+            
+            % add other figures
+%             this.testRectangles();
+            
+        end
+        function testRectangles(this)
+            this.addFigure(FigureRectangle(1, 1, 2, [0 -2.5 32]));
+            this.addFigure(FigureRectangle(2, 1, 2, [2 -1.8 0]));
+            this.addFigure(FigureRectangle(2, 0.8, 2, [0.3 0 0]));
+            this.addFigure(FigureRectangle(1, 1, 2, [3 -3 0]));
+            this.addFigure(FigureRectangle(5, 1, 2, [2 3 0]));
+%             this.addFigure(FigureRectangle(1, 1, 2, [2 -3 0]));
+%             this.addFigure(FigureRectangle(2, 1, 2, [2 -2 0]));
+%             this.addFigure(FigureRectangle(2, 0.8, 2, [2 1 0]));
+%             this.addFigure(FigureRectangle(1, 1, 2, [2 3 0]));
+%             this.addFigure(FigureTriangle(1, 2, [2 3 0]));
+%             this.addFigure(FigureRectangle(5, 1, 2, [2 5 0]));
+            
+        end
+        
+        function addFigure(this, figure)
+            this.figures{length(this.figures)+1}= figure;
         end
         
         function move(this, dt)

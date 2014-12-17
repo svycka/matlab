@@ -1,9 +1,9 @@
 classdef CollisionDetection < handle
     properties
-        stifp_n=50000;     % baudos standumai(smugio saveikoms)
+        stifp_n=10000;     % baudos standumai(smugio saveikoms)
         dampp_n=50;        % baudos normaliniai klampumai(smugio saveikoms)
         dampp_t=50;        % baudos tangentiniai klampumai(smugio saveikoms)
-        fric=0.3;
+        fric=0.6;
     end
     
     methods        
@@ -27,10 +27,18 @@ classdef CollisionDetection < handle
              % du kvadratai
              elseif (isa(figure1, 'FigureRectangle') && isa(figure2, 'FigureRectangle'))
                  this.RectangleAgainstRectangle(figure1, figure2);
+%                  this.RectangleAgainstRectangle(figure2, figure1);
+
+             % kvadratas su trikampiu
+             elseif (isa(figure1, 'FigureTriangle') && isa(figure2, 'FigureRectangle'))
+                 this.RectangleAgainstRectangle(figure1, figure2);
+             elseif (isa(figure2, 'FigureTriangle') && isa(figure1, 'FigureRectangle'))
                  this.RectangleAgainstRectangle(figure2, figure1);
-             % TODO: kvadratas su trikampiu
+                 
              % TODO: du trikampiai
-             
+             elseif (isa(figure1, 'FigureTriangle') && isa(figure2, 'FigureTriangle'))
+                 this.RectangleAgainstRectangle(figure1, figure2);
+                 
              % du apskritimai
              elseif (isa(figure1, 'FigureCircle') && isa(figure2, 'FigureCircle'))
                  this.CircleAgainstCircle(figure1, figure2);
@@ -38,90 +46,133 @@ classdef CollisionDetection < handle
                  error('Dar nemoku tokiï¿½ kolizijï¿½');
              end
          end
-    
+         
          function RectangleAgainstRectangle(this, rectangle1, rectangle2)
+            if (rectangle1.static == rectangle2.static && rectangle1.static == 1), return; end
             coord1=rectangle1.getCorners();
             kv1_c=rectangle1.getCenter();
             %prijungto
             coord2=rectangle2.getCorners();
             kv2_c=rectangle2.getCenter();
-
-            for i=1:2      % ciklas per kli?ties kra?tines 
-                j = i+2;
-
-                Vi = [coord1(1,i), coord1(2,i)];
-                Vj = [coord1(1,j), coord1(2,j)];
-                for i2=1:4      % ciklas per kli?ties kra?tines 
-                    j2 = i2+1;
-                    if j2>4, j2 = 1; end;
-
-                    Vi2 = [coord2(1,i2), coord2(2,i2)];
-                    Vj2 = [coord2(1,j2), coord2(2,j2)];
-
-                    [colides, cor] = this.detectLineCollision(Vi, Vj, Vi2, Vj2);
-                    if (colides == 1)
-                        
-%                          'susikerta',[i,j], [i2,j2]
-                        plot(cor(1),cor(2),'r*','MarkerSize',5)
-                        test1=sqrt((cor(1)-Vi(1))^2+(cor(2)-Vi(2))^2);
-                        test2=sqrt((cor(1)-Vj(1))^2+(cor(2)-Vj(2))^2);
-                        if(test1 < test2)
-                            rad = sqrt((kv1_c(1)-Vi(1))^2+(kv1_c(2)-Vi(2))^2);
-                            col = Vi; 
-                        else
-                            rad = sqrt((kv1_c(1)-Vj(1))^2+(kv1_c(2)-Vj(2))^2);
-                            col = Vj;
+            collotion_count =0;
+            % Ciklas per kvadrato kampus;
+            for i = 1:length(coord1)
+                C = [coord1(1,i), coord1(2,i)]; % i1 kvadrato kampas
+                for j1=1:length(coord2)      % ciklas per kli?ties kra?tines 
+                    j2 = j1+1;
+                    if j2>length(coord2), j2 = 1; end;
+                    Vi = [coord2(1,j1), coord2(2,j1)]; % i2 kvadrato 1 kampas
+                    Vj = [coord2(1,j2), coord2(2,j2)]; % i2 kvadrato 1 kampas
+                    Sij = (Vj - Vi) / norm(Vj - Vi); % 
+                    Pi = C-Vi;
+                    K = Vi + Sij * dot(Sij,Pi);
+                    d = K-C;
+%                     norm(d)
+                    V_norm = [Sij(2), -Sij(1)];
+                    dlt = dot(Vi -C,V_norm);
+                    GR_len = 0.3; %%%% Reiktø sutvarkyti sità sàlyga %%%%%%
+                    if(dlt < 0  & abs(dlt) < GR_len & dot(Sij,Pi)>=0 & dot(Sij,Pi)<=norm(Vj-Vi)),  
+                        [colides, cor] = this.detectLineCollision(kv1_c, C, Vi, Vj);
+                        if (colides == 0),
+                            continue;
                         end
-                        plot([kv1_c(1),cor(1)], [kv1_c(2),cor(2)],'r-');
-                        C_kv1=kv1_c;
-                        C_kv2=kv2_c;
-                        K=cor;
-                        DU_kv1=rectangle1.DU;
-                        DU_kv2=rectangle2.DU;
-                        krastines_centras = [(Vi2(1)+Vj2(1))/2, (Vi2(2)+Vj2(2))/2];
-                        d = C_kv1-krastines_centras;
-                        dlt = rad - norm(d);
-                        
-                        %kampo ilindimo delta
-                        A = Vj2(2)-Vi2(2);
-                        B = Vi2(1)-Vj2(1);
-                        C = A * Vj2(1) + B * Vj2(2);
-                        dlt = abs(A * col(1) + B * col(2) - C)/sqrt(A*A+B*B)
-                        %---------------------------ENDLN;
-                        
-                        
-                        
-                        
-% % % % %                         dlt = rad -norm(d);
-% % % % 
-% % % % 
-% % % % dlt=dot(Vi'-krastines_centras,n)+rad(i);
-% % % % 
-% % % % pause
-                        % Normalï¿½s vektorius apskritimo ir kvadrato
-                        n_kv1 =  (C_kv1 - krastines_centras) / norm (C_kv1 - krastines_centras); tau_kv1=[n_kv1(2),-n_kv1(1)];
-                        n_kv2 = -n_kv1;tau_kv2=[n_kv2(2),-n_kv2(1)]; % kvadrato normalï¿½s vektorius turi bï¿½ti statmenas kontakto plokï¿½tumai, o ne iï¿½keltas iï¿½ centro
-
-                        % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai normalï¿½s vektoriui (statmenos susidï¿½rimo taï¿½kui)
-                        rN_kv1  = dlt*this.stifp_n-dot(DU_kv1(1:2) - DU_kv2(1:2),n_kv1)*this.dampp_n; if rN_kv1<0, rN_kv1=0; end
-                        rN_kv2  = dlt*this.stifp_n-dot(DU_kv2(1:2) - DU_kv1(1:2),n_kv2)*this.dampp_n; if rN_kv2<0, rN_kv2=0; end
-
-                        % Jï¿½gos veikianï¿½ios apskritimï¿½ statmenai tangentï¿½s vektoriui (susidï¿½rimo taï¿½ko liestinï¿½)
-                        rT_kv1=(dot(DU_kv1(1:2)-DU_kv2(1:2),tau_kv1) +(DU_kv1(3)*rad) - DU_kv2(3) * norm(C_kv1-K))*this.dampp_t;
-                        if abs(rT_kv1)>this.fric*abs(rN_kv1), rT_kv1=sign(rT_kv1)*this.fric*rN_kv1; end % Slydimo trintis
-
-                        rT_kv2=(dot(DU_kv2(1:2)-DU_kv1(1:2),tau_kv2) +(DU_kv2(3) * norm(C_kv1-K) - DU_kv1(3)*rad))*this.dampp_t; %slopimas skaiciuojamas atsizvelgiant i kontaktuojanciu tasku greicius (kontakto tasko greitis = centro greitis +  kampinis greitis)
-                        if abs(rT_kv2)>this.fric*abs(rN_kv2), rT_kv2=sign(rT_kv2)*this.fric*rN_kv2; end % Slydimo trintis
-
-                        % apskritimï¿½ veikianti jï¿½ga
-                        r = [K-C_kv1, 0];
-                        mom=cross(r,rN_kv1*[n_kv1, 0]-rT_kv1*[tau_kv1, 0]); 
-                        rectangle1.addDeltaForce(-[-rN_kv1*n_kv1+rT_kv1*tau_kv1, -mom(3)]);
-                        % kvadratï¿½ veikianti jï¿½ga
-                        r = [K-C_kv2, 0];
-                        mom=cross(r,rN_kv2*[n_kv2, 0]-rT_kv2*[tau_kv2, 0]); 
-                        rectangle2.addDeltaForce(-[-rN_kv2*n_kv2+rT_kv2*tau_kv2, -mom(3)]);
-                        break
+                        collotion_count = collotion_count+1;
+                        plot(C(1),C(2),'r*','MarkerSize',5)
+                        % Jegos pirmai figurai
+                        if rectangle1.static == 0,
+                            fff=[0,0,0];
+                            DU_kv1=rectangle1.DU; 
+                            V_norm1 = [-Sij(2), Sij(1), 0];
+                            fn=max(-dlt*this.stifp_n-dot([DU_kv1(1), DU_kv1(2),0],V_norm1)*this.dampp_n,0); % kontakto normaline jega
+                            fff(1:2)=fff(1:2)+fn*V_norm1(1:2); 
+                            tau=[-V_norm1(2),V_norm1(1),0];               % tangente
+                            ft=dot([DU_kv1(1), DU_kv1(2),0],tau)*this.dampp_t;   % kontakto tangentine jega
+                            if fn*this.fric < abs(ft), ft=fn*this.fric*sign(ft); end % apribojimas sausos trinties max jegos reiksme
+                            fff(1:2)=fff(1:2)-ft*tau(1:2);
+                            r=-[kv1_c(1)-K(1),kv1_c(2)-K(2),0];
+                            mom=cross(r,fn*V_norm1-ft*tau); fff(3)=fff(3)+mom(3);        % kontakto jegos momentas
+                            rectangle1.addDeltaForce(fff);
+                        end
+                        % Jegos antrai figurai
+                        if rectangle2.static == 0,
+                            fff=[0,0,0];
+                            DU_kv2=rectangle2.DU; 
+                            V_norm2 = [Sij(2), -Sij(1), 0];
+                            fn=max(-dlt*this.stifp_n-dot([DU_kv2(1), DU_kv2(2),0],V_norm2)*this.dampp_n,0); % kontakto normaline jega
+                            fff(1:2)=fff(1:2)+fn*V_norm2(1:2); 
+                            tau=[V_norm2(2),-V_norm2(1),0];               % tangente
+                            ft=dot([DU_kv2(1), DU_kv2(2),0],tau)*this.dampp_t;   % kontakto tangentine jega
+                            if fn*this.fric < abs(ft), ft=fn*this.fric*sign(ft); end % apribojimas sausos trinties max jegos reiksme
+                            fff(1:2)=fff(1:2)-ft*tau(1:2);
+                            r=-[kv2_c(1)-K(1),kv2_c(2)-K(2),0];
+                            mom=cross(r,fn*V_norm2-ft*tau); fff(3)=fff(3)+mom(3);        % kontakto jegos momentas
+                            rectangle2.addDeltaForce(fff);
+                        end
+                        break;
+                    end
+                end
+            end
+            if collotion_count >1, return; end
+            coord1=rectangle2.getCorners();
+            kv1_c=rectangle2.getCenter();
+            %prijungto
+            coord2=rectangle1.getCorners();
+            kv2_c=rectangle1.getCenter();
+            % Ciklas per kvadrato kampus;
+            for i = 1:length(coord1)
+                C = [coord1(1,i), coord1(2,i)]; % i1 kvadrato kampas
+                for j1=1:length(coord2)      % ciklas per kli?ties kra?tines 
+                    if collotion_count >1, return; end
+                    j2 = j1+1;
+                    if j2>length(coord2), j2 = 1; end;
+                    Vi = [coord2(1,j1), coord2(2,j1)]; % i2 kvadrato 1 kampas
+                    Vj = [coord2(1,j2), coord2(2,j2)]; % i2 kvadrato 1 kampas
+                    Sij = (Vj - Vi) / norm(Vj - Vi); % 
+                    Pi = C-Vi;
+                    K = Vi + Sij * dot(Sij,Pi);
+                    d = K-C;
+%                     norm(d)
+                    V_norm = [Sij(2), -Sij(1)];
+                    dlt = dot(Vi -C,V_norm);
+                    GR_len = 0.3; %%%% Reiktø sutvarkyti sità sàlyga %%%%%%
+                    if(dlt < 0  & abs(dlt) < GR_len & dot(Sij,Pi)>=0 & dot(Sij,Pi)<=norm(Vj-Vi)),  
+                        [colides, cor] = this.detectLineCollision(kv1_c, C, Vi, Vj);
+                        if (colides == 0),
+                            continue;
+                        end
+                        collotion_count = collotion_count+1;
+                        plot(C(1),C(2),'r*','MarkerSize',5)
+                        % Jegos pirmai figurai
+                        if rectangle2.static == 0,
+                            fff=[0,0,0];
+                            DU_kv1=rectangle2.DU; 
+                            V_norm1 = [-Sij(2), Sij(1), 0];
+                            fn=max(-dlt*this.stifp_n-dot([DU_kv1(1), DU_kv1(2),0],V_norm1)*this.dampp_n,0); % kontakto normaline jega
+                            fff(1:2)=fff(1:2)+fn*V_norm1(1:2); 
+                            tau=[-V_norm1(2),V_norm1(1),0];               % tangente
+                            ft=dot([DU_kv1(1), DU_kv1(2),0],tau)*this.dampp_t;   % kontakto tangentine jega
+                            if fn*this.fric < abs(ft), ft=fn*this.fric*sign(ft); end % apribojimas sausos trinties max jegos reiksme
+                            fff(1:2)=fff(1:2)-ft*tau(1:2);
+                            r=-[kv1_c(1)-K(1),kv1_c(2)-K(2),0];
+                            mom=cross(r,fn*V_norm1-ft*tau); fff(3)=fff(3)+mom(3);        % kontakto jegos momentas
+                            rectangle2.addDeltaForce(fff);
+                        end
+                        % Jegos antrai figurai
+                        if rectangle1.static == 0,
+                            fff=[0,0,0];
+                            DU_kv2=rectangle1.DU; 
+                            V_norm2 = [Sij(2), -Sij(1), 0];
+                            fn=max(-dlt*this.stifp_n-dot([DU_kv2(1), DU_kv2(2),0],V_norm2)*this.dampp_n,0); % kontakto normaline jega
+                            fff(1:2)=fff(1:2)+fn*V_norm2(1:2); 
+                            tau=[V_norm2(2),-V_norm2(1),0];               % tangente
+                            ft=dot([DU_kv2(1), DU_kv2(2),0],tau)*this.dampp_t;   % kontakto tangentine jega
+                            if fn*this.fric < abs(ft), ft=fn*this.fric*sign(ft); end % apribojimas sausos trinties max jegos reiksme
+                            fff(1:2)=fff(1:2)-ft*tau(1:2);
+                            r=-[kv2_c(1)-K(1),kv2_c(2)-K(2),0];
+                            mom=cross(r,fn*V_norm2-ft*tau); fff(3)=fff(3)+mom(3);        % kontakto jegos momentas
+                            rectangle1.addDeltaForce(fff);
+                        end
+                        break;
                     end
                 end
             end

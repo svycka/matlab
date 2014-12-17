@@ -30,9 +30,9 @@ classdef FigureRectangle < Figure
             b = this.b;
             
             xc=U(1)+cor(1);yc=U(2)+cor(2);phi=U(3)+cor(3);
-            coord=[-a/2  a/2  a/2 -a/2;
-                   -b/2 -b/2  b/2  b/2;
-                     1    1    1    1  ];   % staciakampis etalonineje padetyje
+            coord=[-a/2 -a/2   a/2  a/2; 
+                   -b/2  b/2   b/2  -b/2;
+                     1    1    1     1  ];   % staciakampis etalonineje padetyje
             T=[cos(phi) -sin(phi) xc;
                sin(phi)  cos(phi) yc;
                   0         0      1 ];      % transformavimo matrica
