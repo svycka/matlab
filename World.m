@@ -24,6 +24,7 @@ classdef World < handle
             
             % add other figures
 %             this.testRectangles();
+%             this.uzduotis();
             
         end
         function testRectangles(this)
@@ -38,6 +39,16 @@ classdef World < handle
 %             this.addFigure(FigureRectangle(1, 1, 2, [2 3 0]));
 %             this.addFigure(FigureTriangle(1, 2, [2 3 0]));
 %             this.addFigure(FigureRectangle(5, 1, 2, [2 5 0]));
+            
+        end
+        
+        function uzduotis(this)
+            this.addFigure(FigureRectangle(1, 1, 2, [2 -3 0]));
+            this.addFigure(FigureRectangle(1, 1, 2, [2 -2 0]));
+            this.addFigure(FigureRectangle(1, 1, 2, [2 -1 0]));
+            this.addFigure(FigureRectangle(1, 1, 2, [2 0 0]));
+            this.addFigure(FigureRectangle(5, 0.5, 2, [2 0.75 0]));
+            this.addFigure(FigureCircle(1, 2, [0 -2.5 0]));
             
         end
         
