@@ -11,7 +11,23 @@ classdef CollisionDetection < handle
              
          end
         
+         function result = inRange(~, figure1, figure2)
+            C1 = figure1.getCenter();
+            C2 = figure2.getCenter();
+            result = 0;
+            if (figure1.static == 0 || figure2.static == 0),
+                minDistance = figure1.radius + figure2.radius;
+                distance = sqrt((C1(1)-C2(1))^2+(C1(2)-C2(2))^2);
+                if distance <= minDistance,
+                    result = 1;
+                end
+            end
+         end
          function detectCollision(this, figure1, figure2)
+             if (this.inRange(figure1, figure2) == 0)
+                return
+             end
+             
              % apskritimas su kvadratu
              if (isa(figure1, 'FigureCircle') && isa(figure2, 'FigureRectangle'))
                 this.circleAgainstRectangle(figure1, figure2);
