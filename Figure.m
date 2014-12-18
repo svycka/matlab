@@ -11,6 +11,7 @@ classdef (Abstract) Figure < handle
         cor; % pradines figuros kordinates
         deltaF = zeros(1,3);
         static=0;
+        radius; % spindulys á kurá telpa figûra
     end
     methods (Abstract)
         draw(this)

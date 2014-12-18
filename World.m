@@ -11,20 +11,20 @@ classdef World < handle
             
             % add walls
             figure_hor = FigureRectangle(16, 1, 1, [0 -4 0]);
-            figure_ver1 = FigureRectangle(1, 8, 1, [-2 0 0]);
-            figure_ver2 = FigureRectangle(1, 8, 1, [6 0 0]);
+            figure_ver1 = FigureRectangle(1, 16, 1, [-2 0 0]);
+            figure_ver2 = FigureRectangle(1, 16, 1, [6 0 0]);
             figure_hor.static = 1;
             figure_ver1.static = 1;
             figure_ver2.static = 1;
             this.addFigure(figure_hor);
             this.addFigure(figure_ver1);
             this.addFigure(figure_ver2);
-            this.addFigure(FigureTriangle(1, 2, [2 -2 0]));
-            this.addFigure(FigureTriangle(1, 2, [2 -3 0]));
+%             this.addFigure(FigureTriangle(1, 2, [2 -2 0]));
+%             this.addFigure(FigureTriangle(1, 2, [2 -3 0]));
             
             % add other figures
 %             this.testRectangles();
-%             this.uzduotis();
+            this.uzduotis();
             
         end
         function testRectangles(this)
@@ -50,6 +50,36 @@ classdef World < handle
             this.addFigure(FigureRectangle(5, 0.5, 2, [2 0.75 0]));
             this.addFigure(FigureCircle(1, 2, [0 -2.5 0]));
             
+        end
+        
+        function addRandomFigure(this)
+            positions = [2,    3.5, 0;
+                         -0.5, 3.5, 0;
+                         4.5,  3.5, 0];
+            randType = randi([1 2],1,1);
+            switch randType
+                case 1
+                    newFigure = FigureCircle(0.5, 2, positions(randi([1 3],1,1),:));
+                case 2
+                    newFigure = FigureRectangle(1, 1, 2, positions(randi([1 3],1,1),:));
+                otherwise
+                    error('blogas figuros tipas.')
+            end
+            
+            C1 = newFigure.getCenter();
+            for i=1:1:length(this.figures)
+                figure = this.figures{i};
+                if (figure.static == 1), continue; end;
+                minDistance = newFigure.radius + figure.radius;
+                C2 = figure.getCenter();
+                distance = sqrt((C1(1)-C2(1))^2+(C1(2)-C2(2))^2);
+                if distance <= minDistance,
+                    return;
+                end
+            end
+                
+            newFigure.DU = [randi([-5 5],1,1) randi([-5 5],1,1) randi([-5 5],1,1)];
+            this.addFigure(newFigure);
         end
         
         function addFigure(this, figure)

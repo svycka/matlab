@@ -312,7 +312,7 @@ classdef CollisionDetection < handle
                     mom=cross(r,rN_kv*[n_kv, 0]-rT_kv*[tau_kv, 0]); 
                     rectangle.addDeltaForce(-[-rN_kv*n_kv+rT_kv*tau_kv, -mom(3)]);
 
-                    disp('Apskritimas kontaktuoja su briauna'); 
+%                     disp('Apskritimas kontaktuoja su briauna'); 
                 end
 
 
@@ -348,7 +348,7 @@ classdef CollisionDetection < handle
                     rectangle.addDeltaForce(-[-rN_kv*n_kv+rT_kv*tau_kv, -mom(3)]);
 
                     % Kaip kontakte su kampu  END -----------------------------
-                    disp('Apskritimas kontaktuoja su kampu'); 
+%                     disp('Apskritimas kontaktuoja su kampu'); 
                 end
             end
             
@@ -404,7 +404,7 @@ classdef CollisionDetection < handle
                     mom=cross(r,rN_kv*[n_kv, 0]-rT_kv*[tau_kv, 0]); 
                     triangle.addDeltaForce(-[-rN_kv*n_kv+rT_kv*tau_kv, -mom(3)]);
 
-                    disp('Apskritimas kontaktuoja su briauna'); 
+%                     disp('Apskritimas kontaktuoja su briauna'); 
                 end
 
 
@@ -440,7 +440,7 @@ classdef CollisionDetection < handle
                     triangle.addDeltaForce(-[-rN_kv*n_kv+rT_kv*tau_kv, -mom(3)]);
 
                     % Kaip kontakte su kampu  END -----------------------------
-                    disp('Apskritimas kontaktuoja su kampu'); 
+%                     disp('Apskritimas kontaktuoja su kampu'); 
                 end
             end
             

@@ -6,6 +6,7 @@ classdef FigureCircle < Figure
     methods
         function this = FigureCircle(rad, m, cor)
             this.rad = rad;
+            this.radius = rad;
             this.I = (m*rad^2)/2;
             this.m = m;
             this.F = [0 -this.g*m 0];

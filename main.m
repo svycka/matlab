@@ -6,7 +6,9 @@ function main()
     model = World();
     figure(1);axis equal;axis([xmin,xmax,ymin,ymax]);hold on, grid on
     for t=0:dt:TT
-%         if mod(t, 0.004) == 0,
+        if mod(t, 0.05) == 0,
+            model.addRandomFigure();
+        end
             title(sprintf('t=%g',t));
             pause(dt); 
             cla;hold on;

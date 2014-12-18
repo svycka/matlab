@@ -15,6 +15,7 @@ classdef FigureRectangle < Figure
             this.I = m*(a^2+b^2)/12;
             this.phi = cor(3);
             this.cor = cor; % [x y posukio_kampas]
+            this.radius = sqrt(a^2+b^2)/2;
         end
 
         function draw(this)
