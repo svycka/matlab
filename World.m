@@ -19,7 +19,7 @@ classdef World < handle
             this.addFigure(figure_hor);
             this.addFigure(figure_ver1);
             this.addFigure(figure_ver2);
-%             this.addFigure(FigureTriangle(1, 2, [2 -2 0]));
+%             this.addFigure(FigureTriangle(1, 2, [2.1 -1 0]));
 %             this.addFigure(FigureTriangle(1, 2, [2 -3 0]));
             
             % add other figures
@@ -56,12 +56,14 @@ classdef World < handle
             positions = [2,    3.5, 0;
                          -0.5, 3.5, 0;
                          4.5,  3.5, 0];
-            randType = randi([1 2],1,1);
+            randType = randi([1 3],1,1);
             switch randType
                 case 1
                     newFigure = FigureCircle(0.5, 2, positions(randi([1 3],1,1),:));
                 case 2
                     newFigure = FigureRectangle(1, 1, 2, positions(randi([1 3],1,1),:));
+                case 3
+                    newFigure = FigureTriangle(1, 2, positions(randi([1 3],1,1),:));
                 otherwise
                     error('blogas figuros tipas.')
             end

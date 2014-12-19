@@ -14,6 +14,7 @@ classdef FigureTriangle < Figure
             this.F = [0 -this.g*m 0];
             this.phi = cor(3);
             this.cor = cor;
+            this.radius = sqrt(a^2+a^2)/2;
         end
 
         function draw(this)
@@ -29,8 +30,8 @@ classdef FigureTriangle < Figure
             b = this.b;
             
             xc=U(1)+cor(1);yc=U(2)+cor(2);phi=U(3)+cor(3);
-            coord=[-a/2  a/2  0;
-                   -b/2 -b/2  b/2;
+            coord=[-a/2  0   a/2;
+                   -b/2  this.radius -b/2;
                      1    1    1  ];   % staciakampis etalonineje padetyje
 
             T=[cos(phi) -sin(phi) xc;
